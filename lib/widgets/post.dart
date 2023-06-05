@@ -1,9 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
 import 'package:instagram/utils/api.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/post_model.dart';
 
@@ -11,6 +14,7 @@ import '../models/post_model.dart';
 class PostWidget extends StatelessWidget {
   Post post;
   int id;
+  final PageController pageController = PageController();
   Function(BuildContext, int) likePost;
   PostWidget(
       {Key? key, required this.post, required this.id, required this.likePost})
@@ -51,31 +55,77 @@ class PostWidget extends StatelessWidget {
             ),
           ],
         ),
-        Builder(
-          builder: (context) {
-            return GestureDetector(
-              onDoubleTap: () {
-                likePost(context, id);
+        Builder(builder: (context) {
+          return GestureDetector(
+            onDoubleTap: () {
+              likePost(context, id);
+            },
+            child: FutureBuilder(
+              future: ApiClient.storage.getFileDownload(
+                  bucketId: ApiInfo.bucketId, fileId: post.post),
+              builder: (context, snapshot) {
+                return snapshot.hasData && snapshot.data != null
+                    ? ExpandablePageView(
+                      controller: pageController,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Image.network(
+                                post.previewImageURL,
+                                fit: BoxFit.contain,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 16, right: 16),
+                                  child: CircleAvatar(
+                                    radius:
+                                        20, // Adjust the radius to your preference
+                                    backgroundColor: Colors.grey,
+                                    child: IconButton(
+                                      color: Colors.white,
+                                      icon: Icon(Icons.launch),
+                                      onPressed: _launchUrl,
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Image.memory(
+                                snapshot.data! as Uint8List,
+                                width: double.infinity,
+                                fit: BoxFit.contain,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 16, right: 16),
+                                  child: CircleAvatar(
+                                    radius:
+                                        20, // Adjust the radius to your preference
+                                    backgroundColor: Colors.grey,
+                                    child: IconButton(
+                                      color: Colors.white,
+                                      icon: Icon(Icons.launch),
+                                      onPressed: _launchUrl,
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                    : CircularProgressIndicator();
               },
-              child: FutureBuilder(
-                  future: ApiClient.storage.getFileDownload(
-                      bucketId: ApiInfo.bucketId, fileId: post.post),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData && snapshot.data != null
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Image.memory(
-                              snapshot.data! as Uint8List,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : CircularProgressIndicator();
-                  },
-                ),
-            );
-          }
-        ),
+            ),
+          );
+        }),
         Row(
           children: [
             Padding(
@@ -84,23 +134,21 @@ class PostWidget extends StatelessWidget {
                 left: 14.0,
                 bottom: 16.0,
               ),
-              child: Builder(
-                builder: (context) {
-                  return IconButton(
-                    constraints: BoxConstraints(),
-                    padding: EdgeInsets.zero,
-                    icon: Image.asset(
-                      (post.liked)
-                          ? "assets/liked_button.png"
-                          : "assets/nav_notif.png",
-                      width: 24.0,
-                    ),
-                    onPressed: () {
-                      likePost(context, id);
-                    },
-                  );
-                }
-              ),
+              child: Builder(builder: (context) {
+                return IconButton(
+                  constraints: BoxConstraints(),
+                  padding: EdgeInsets.zero,
+                  icon: Image.asset(
+                    (post.liked)
+                        ? "assets/liked_button.png"
+                        : "assets/nav_notif.png",
+                    width: 24.0,
+                  ),
+                  onPressed: () {
+                    likePost(context, id);
+                  },
+                );
+              }),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -183,5 +231,12 @@ class PostWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _launchUrl() async {
+    final Uri url = Uri.parse(post.githubURL);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

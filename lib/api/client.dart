@@ -5,10 +5,11 @@ import '../utils/api.dart';
 class ApiClient {
   Client get _client {
 
-    Client client = Client()
-      .setEndpoint(ApiInfo.url)
-      .setProject(ApiInfo.projectId)
-      .setSelfSigned(status: true);
+    Client client = Client();
+    client
+        .setEndpoint('https://cloud.appwrite.io/v1')
+        .setProject('almostInstagramTest')
+        .setSelfSigned(status: true);
 
     return client;
   }

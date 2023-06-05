@@ -20,6 +20,8 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
   List<Post> _posts = [
     Post(
+      previewImageURL: "",
+      githubURL: 'https://github.com/foss42/api-dash',
         image: "assets/profile_4.png",
         name: "joshua_l",
         location: "Tokyo, Japan",
@@ -67,6 +69,8 @@ class _HomeHomeTab extends State<HomeHomeTab> {
         setState(() {
 
           _posts.add(Post(
+            previewImageURL: docs[i].data["previewImageURL"],
+            githubURL: docs[i].data["githubURL"],
             name: docs[i].data["username"],
             caption: docs[i].data["caption"],
             post: docs[i].data["imageId"],

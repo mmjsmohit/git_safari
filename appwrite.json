@@ -1,6 +1,6 @@
 {
-    "projectId": "almostinstagram",
-    "projectName": "Instagram",
+    "projectId": "almostInstagramTest",
+    "projectName": "Almost Instagram",
     "collections": [
         {
             "$id": "postcollection",
