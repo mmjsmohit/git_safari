@@ -20,8 +20,8 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
   List<Post> _posts = [
     Post(
-      previewImageURL: "",
-      githubURL: 'https://github.com/foss42/api-dash',
+        previewImageURL: "",
+        githubURL: 'https://github.com/foss42/api-dash',
         image: "assets/profile_4.png",
         name: "joshua_l",
         location: "Tokyo, Japan",
@@ -34,7 +34,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
   void likePost(BuildContext context, int i) {
     List<Post> newPosts = List.from(_posts);
-    
+
     newPosts[i].liked = !newPosts[i].liked;
     if (newPosts[i].liked) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -46,7 +46,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     setState(() {
       _posts = List.from(newPosts);
     });
-
   }
 
   void updateList() {
@@ -59,15 +58,13 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     );
 
     result.then((response) {
-
       List docs = response.documents;
 
-      for (int i = docs.length-1; i >= 0; i--) {
+      for (int i = docs.length - 1; i >= 0; i--) {
         // Assign a random profile pic to each post.
         int profileId = (i % 4) + 1;
 
         setState(() {
-
           _posts.add(Post(
             previewImageURL: docs[i].data["previewImageURL"],
             githubURL: docs[i].data["githubURL"],
@@ -94,7 +91,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     result.then((response) {
       // Success
       setState(() {
-
         // Set the username fetched from account.
         _username = response.name;
       });
@@ -127,127 +123,121 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: Color(0xFF121212),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 44.0, bottom: 12.0),
-            child: Row(
+    return SafeArea(
+      child: Column(
+        children: [
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/logo/gs_logo.png",
+                    width: 80,
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Image.asset(
+                      "assets/igtv.png",
+                      width: 24.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Image.asset(
+                      "assets/messanger.png",
+                      width: 24.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 100.0,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Image.asset(
-                    "assets/camera.png",
-                    width: 24.0,
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile.png",
+                    width: 56.0,
                   ),
+                  name: _username,
+                  seen: false,
                 ),
-                Spacer(),
-                Image.asset(
-                  "assets/logo.png",
-                  width: 105.0,
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: Image.asset(
-                    "assets/igtv.png",
-                    width: 24.0,
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile_1.png",
+                    width: 56.0,
                   ),
+                  name: "zachjohn",
+                  seen: false,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: Image.asset(
-                    "assets/messanger.png",
-                    width: 24.0,
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile_2.png",
+                    width: 56.0,
                   ),
+                  name: "kieron_d",
+                  seen: false,
+                ),
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile_3.png",
+                    width: 56.0,
+                  ),
+                  name: "craig_joe",
+                  seen: false,
+                ),
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile_1.png",
+                    width: 56.0,
+                  ),
+                  name: "zachjohn",
+                  seen: false,
+                ),
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile_2.png",
+                    width: 56.0,
+                  ),
+                  name: "kieron_d",
+                  seen: false,
+                ),
+                StoryWidget(
+                  image: Image.asset(
+                    "assets/profile_3.png",
+                    width: 56.0,
+                  ),
+                  name: "craig_joe",
+                  seen: false,
                 ),
               ],
             ),
           ),
-        ),
-        SizedBox(
-          height: 100.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile.png",
-                  width: 56.0,
-                ),
-                name: _username,
-                seen: false,
-              ),
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile_1.png",
-                  width: 56.0,
-                ),
-                name: "zachjohn",
-                seen: false,
-              ),
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile_2.png",
-                  width: 56.0,
-                ),
-                name: "kieron_d",
-                seen: false,
-              ),
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile_3.png",
-                  width: 56.0,
-                ),
-                name: "craig_joe",
-                seen: false,
-              ),
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile_1.png",
-                  width: 56.0,
-                ),
-                name: "zachjohn",
-                seen: false,
-              ),
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile_2.png",
-                  width: 56.0,
-                ),
-                name: "kieron_d",
-                seen: false,
-              ),
-              StoryWidget(
-                image: Image.asset(
-                  "assets/profile_3.png",
-                  width: 56.0,
-                ),
-                name: "craig_joe",
-                seen: false,
-              ),
-            ],
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: _posts.length,
+              itemBuilder: (context, i) {
+                return PostWidget(
+                  post: _posts[i],
+                  id: i,
+                  likePost: likePost,
+                );
+              },
+            ),
           ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: _posts.length,
-            itemBuilder: (context, i) {
-              return PostWidget(
-                post: _posts[i],
-                id: i,
-                likePost: likePost,
-              );
-            },
+          Container(
+            height: 0.5,
+            color: Color(0x55FFFFFF),
           ),
-        ),
-        Container(
-          height: 0.5,
-          color: Color(0x55FFFFFF),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

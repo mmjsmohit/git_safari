@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
 import 'package:instagram/screens/home.dart';
 import 'package:instagram/utils/api.dart';
+import 'package:instagram/widgets/logo.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -54,12 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               height: 90.0,
             ),
-            Center(
-              child: Image(
-                image: AssetImage('assets/logo.png'),
-                height: 50.0,
-              ),
-            ),
+            GitSafariLogo(padding: EdgeInsets.all(16)),
             Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0),
               child: TextField(
@@ -81,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   hintText: 'Email',
-                  hintStyle: TextStyle(fontSize: 14.0, color: Color(0x99FFFFFF)),
+                  hintStyle:
+                      TextStyle(fontSize: 14.0, color: Color(0x99FFFFFF)),
                 ),
               ),
             ),
@@ -107,7 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   hintText: 'Password',
-                  hintStyle: TextStyle(fontSize: 14.0, color: Color(0x99FFFFFF)),
+                  hintStyle:
+                      TextStyle(fontSize: 14.0, color: Color(0x99FFFFFF)),
                 ),
               ),
             ),
@@ -115,8 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Spacer(),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(right: 16.0, top: 20.0, bottom: 30.0),
+                  padding: const EdgeInsets.only(
+                      right: 16.0, top: 20.0, bottom: 30.0),
                   child: Text(
                     "Forgot password?",
                     textAlign: TextAlign.right,
@@ -125,26 +123,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 44.0,
-                child: Builder(builder: (context) {
-                  return ElevatedButton(
-                    onPressed: () => login(context),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    child: Text(
-                      'Log in',
-                      style: TextStyle(fontSize: 14.0, fontFamily: 'Roboto'),
-                    ),
-                  );
-                }),
-              ),
+            GradientButton(
+              text: 'Log In',
+              icon: Icons.login,
+              onPressed: () => login(context),
             ),
             Container(
               height: 90.0,
@@ -205,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
               child: Text(
-                "Instagram from Meta",
+                "Made by Mohit and Shaunak. Open source Rocks.",
                 textAlign: TextAlign.right,
                 style: TextStyle(fontSize: 12.0, color: Color(0x99FFFFFF)),
               ),

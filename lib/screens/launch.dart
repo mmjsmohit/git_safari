@@ -1,10 +1,11 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
+import 'package:instagram/consts/constants.dart';
 import 'package:instagram/screens/home.dart';
 import 'package:instagram/screens/login.dart';
 import 'package:instagram/screens/signup.dart';
-import 'package:instagram/utils/api.dart';
+
+import '../widgets/logo.dart';
 
 class LaunchScreen extends StatelessWidget {
   LaunchScreen({Key? key}) : super(key: key);
@@ -29,73 +30,39 @@ class LaunchScreen extends StatelessWidget {
       // User not logged in.
       print(error);
     }
-    
+
     return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: const Color(0xFF000000)),
+      theme: kDarkTheme,
       debugShowCheckedModeBanner: false,
       home: Builder(builder: (context) {
         _context = context;
         return Scaffold(
           body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(),
-              Center(
-                child: Image(
-                  image: AssetImage('assets/logo.png'),
-                  height: 50.0,
-                ),
+              GitSafariLogo(padding: EdgeInsets.all(16)),
+              SizedBox(
+                height: 40,
               ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 34.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 44.0,
-                  child: Builder(builder: (context) {
-                    return ElevatedButton(
-                      onPressed: () async {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LoginScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      child: Text(
-                        'Log in',
-                        style: TextStyle(fontSize: 14.0, fontFamily: 'Roboto'),
-                      ),
-                    );
-                  }),
-                ),
+              GradientButton(
+                icon: Icons.login,
+                text: "Log In",
+                onPressed: () async {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
               ),
-              Padding(padding: EdgeInsets.only(top: 50.0)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 34.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 44.0,
-                  child: Builder(builder: (context) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignupScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      child: Text(
-                        'Sign up',
-                        style: TextStyle(fontSize: 14.0, fontFamily: 'Roboto'),
-                      ),
-                    );
-                  }),
-                ),
+              SizedBox(
+                height: 16,
               ),
-              Spacer(),
+              GradientButton(
+                icon: Icons.edit_note,
+                text: "Sign Up",
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SignupScreen()));
+                },
+              ),
             ],
           ),
         );
