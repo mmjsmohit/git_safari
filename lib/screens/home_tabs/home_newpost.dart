@@ -18,9 +18,10 @@ class HomeNewpostTab extends StatefulWidget {
 class _HomeNewpostTabState extends State<HomeNewpostTab> {
   String _imageId = "";
   String _username = "";
-  String? resultURL;
+  Map<String, String>? result;
   final TextEditingController _caption = TextEditingController();
   final TextEditingController _githubURL = TextEditingController();
+  String? language;
   bool _imageSelected = false;
 
   void createNewPost(BuildContext context) {
@@ -53,7 +54,8 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
           'repoOwner': repoOwner,
           'repoName': repoName,
           'previewImageURL':
-              'https://opengraph.githubassets.com/anyrandomhashvaluebutastring/$repoOwner/$repoName'
+              'https://opengraph.githubassets.com/anyrandomhashvaluebutastring/$repoOwner/$repoName',
+          'language': language
         });
 
     result.then((response) {
@@ -161,7 +163,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                       CupertinoButton.filled(
                         child: Text('Search for repositories'),
                         onPressed: () async {
-                          resultURL = await Navigator.push(
+                          result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
@@ -169,11 +171,12 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                               },
                             ),
                           );
-                          if (resultURL != null) {
-                            print("URL received as: $resultURL");
+                          if (result != null) {
+                            print("Result received as: $result");
 
                             setState(() {
-                              _githubURL.text = resultURL!;
+                              language = result!['language_url'];
+                              _githubURL.text = result!['html_url']!;
                             });
                           }
                         },
