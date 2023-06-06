@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
 import 'package:instagram/screens/home.dart';
 import 'package:instagram/widgets/logo.dart';
-
-import '../utils/api.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);

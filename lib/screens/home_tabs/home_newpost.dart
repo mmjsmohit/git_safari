@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
@@ -6,9 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/api/client.dart';
+import 'package:instagram/consts/constants.dart';
 import 'package:instagram/screens/repo_search.dart';
-import 'package:instagram/utils/api.dart';
-import 'package:instagram/widgets/github_search.dart';
 
 class HomeNewpostTab extends StatefulWidget {
   const HomeNewpostTab({super.key});
@@ -44,8 +42,8 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
     String repoName = pathSegments[1];
     // Create a new document in our posts collection.
     Future result = ApiClient.databases.createDocument(
-        databaseId: ApiInfo.databaseId,
-        collectionId: ApiInfo.collectionId,
+        databaseId: APPWRITE_DATABASE_ID,
+        collectionId: POST_COLLECTION_ID,
         documentId: "unique()",
         data: {
           'username': _username,
@@ -79,7 +77,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
     try {
       // Upload the image file to appwrite storage.
       Future result = ApiClient.storage.createFile(
-        bucketId: ApiInfo.bucketId,
+        bucketId: BUCKET_ID,
         fileId: "unique()",
         file: InputFile(path: image!.path, filename: image.name),
       );
@@ -171,7 +169,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                               },
                             ),
                           );
-                          if(resultURL != null){
+                          if (resultURL != null) {
                             print("URL received as: $resultURL");
 
                             setState(() {
@@ -183,7 +181,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                       TextField(
                         controller: _githubURL,
                         style:
-                        TextStyle(fontSize: 14.0, color: Color(0xFFFFFFFF)),
+                            TextStyle(fontSize: 14.0, color: Color(0xFFFFFFFF)),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           filled: true,
@@ -215,8 +213,8 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
           ),
           (_imageSelected)
               ? FutureBuilder(
-                  future: ApiClient.storage.getFileDownload(
-                      bucketId: ApiInfo.bucketId, fileId: _imageId),
+                  future: ApiClient.storage
+                      .getFileDownload(bucketId: BUCKET_ID, fileId: _imageId),
                   builder: (context, snapshot) {
                     return snapshot.hasData && snapshot.data != null
                         ? Padding(

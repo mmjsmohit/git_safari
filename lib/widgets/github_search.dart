@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 class SearchBox extends StatefulWidget {
+  const SearchBox({super.key});
+
   @override
   _SearchBoxState createState() => _SearchBoxState();
 }
 
 class _SearchBoxState extends State<SearchBox> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<String> _searchResults = [];
   bool _isLoading = false;
 
@@ -25,7 +28,10 @@ class _SearchBoxState extends State<SearchBox> {
               focusColor: Colors.white,
               labelText: 'Search',
               suffixIcon: IconButton(
-                icon: Icon(Icons.search, color: Colors.white,),
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   _searchRepositories();
                 },
@@ -35,7 +41,11 @@ class _SearchBoxState extends State<SearchBox> {
           Wrap(
             spacing: 8.0,
             children: _searchResults
-                .map((result) => ListTile(title: Text(result, style: TextStyle(color: Colors.white),)))
+                .map((result) => ListTile(
+                        title: Text(
+                      result,
+                      style: TextStyle(color: Colors.white),
+                    )))
                 .toList(),
           ),
         ],
@@ -53,15 +63,16 @@ class _SearchBoxState extends State<SearchBox> {
       _isLoading = true;
     });
 
-    var response = await http.get(Uri.parse('https://api.github.com/search/repositories?q=$_searchController.text',));
+    var response = await http.get(Uri.parse(
+      'https://api.github.com/search/repositories?q=$_searchController.text',
+    ));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       List<dynamic> items = jsonResponse['items'];
       setState(() {
-        _searchResults = items
-            .map((item) => item['full_name'].toString())
-            .toList();
+        _searchResults =
+            items.map((item) => item['full_name'].toString()).toList();
         _isLoading = false;
       });
     } else {

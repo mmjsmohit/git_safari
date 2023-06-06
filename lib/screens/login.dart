@@ -1,8 +1,6 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
 import 'package:instagram/screens/home.dart';
-import 'package:instagram/utils/api.dart';
 import 'package:instagram/widgets/logo.dart';
 
 class LoginScreen extends StatefulWidget {

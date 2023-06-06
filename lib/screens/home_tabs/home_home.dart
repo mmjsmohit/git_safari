@@ -1,8 +1,7 @@
-import 'package:appwrite/appwrite.dart';
+import 'package:instagram/consts/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
 import 'package:instagram/models/post_model.dart';
-import 'package:instagram/utils/api.dart';
 import 'package:instagram/widgets/post.dart';
 import 'package:instagram/widgets/story.dart';
 
@@ -53,8 +52,8 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
     // Get the list of documents (posts).
     Future result = ApiClient.databases.listDocuments(
-      databaseId: ApiInfo.databaseId,
-      collectionId: ApiInfo.collectionId,
+      databaseId: APPWRITE_DATABASE_ID,
+      collectionId: POST_COLLECTION_ID,
     );
 
     result.then((response) {
@@ -101,7 +100,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
     // Subscribe to changes in posts.
     subscription = ApiClient.realtime.subscribe([
-      'databases.${ApiInfo.databaseId}.collections.${ApiInfo.collectionId}.documents'
+      'databases.$APPWRITE_DATABASE_ID.collections.$POST_COLLECTION_ID.documents'
     ]);
 
     // Call updateList every time a change has been detected.

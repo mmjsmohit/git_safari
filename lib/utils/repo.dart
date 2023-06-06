@@ -12,7 +12,7 @@ class Repo {
   static List<Repo> mapJSONStringToList(List<dynamic> jsonList) {
     return jsonList
         .map((r) => Repo(r['html_url'], r['watchers_count'], r['language'],
-        r['description'], r['name'], r['owner']['login']))
+            r['description'], r['name'], r['owner']['login']))
         .toList();
   }
 }

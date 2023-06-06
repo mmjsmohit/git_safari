@@ -19,7 +19,7 @@ class _SearchState extends State<SearchList> {
   String? _error;
   List<Repo> _results = [];
 
-  Timer debounceTimer = Timer(Duration(milliseconds: 3000), () { });
+  Timer debounceTimer = Timer(Duration(milliseconds: 3000), () {});
 
   _SearchState() {
     _searchQuery.addListener(() {
@@ -51,7 +51,7 @@ class _SearchState extends State<SearchList> {
     });
 
     final repos = await Api.getRepositoriesWithSearchQuery(query);
-    if (this._searchQuery.text == query && this.mounted) {
+    if (_searchQuery.text == query && mounted) {
       setState(() {
         _isSearching = false;
         if (repos != null) {
@@ -118,7 +118,10 @@ class CenterTitle extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           title,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: Colors.white),
           textAlign: TextAlign.center,
         ));
   }

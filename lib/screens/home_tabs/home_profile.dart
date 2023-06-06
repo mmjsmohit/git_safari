@@ -1,8 +1,6 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
 import 'package:instagram/screens/launch.dart';
-import 'package:instagram/utils/api.dart';
 
 import '../../widgets/story.dart';
 
@@ -17,7 +15,6 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
   String _username = "";
 
   void logout(BuildContext context) {
-
     // Delete the current session.
     Future result = ApiClient.account.deleteSession(
       sessionId: 'current',
@@ -31,7 +28,6 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
         MaterialPageRoute(builder: (context) => LaunchScreen()),
         ModalRoute.withName('/'),
       );
-
     }).catchError((error) {
       // Failure
       print(error.response);
@@ -201,7 +197,7 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                 child: Builder(builder: (context) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
+                      backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.0),
                       ),

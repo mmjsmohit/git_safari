@@ -5,4 +5,3 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(LaunchScreen());
 }
-

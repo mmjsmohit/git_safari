@@ -8,9 +8,10 @@ import '../utils/repo.dart';
 
 class Api {
   static final HttpClient _httpClient = HttpClient();
-  static final String _url = "api.github.com";
+  static const String _url = "api.github.com";
 
-  static Future<List<Repo>?> getRepositoriesWithSearchQuery(String query) async {
+  static Future<List<Repo>?> getRepositoriesWithSearchQuery(
+      String query) async {
     final uri = Uri.https(_url, '/search/repositories', {
       'q': query,
       'sort': 'stars',
@@ -63,7 +64,7 @@ class Api {
     try {
       final httpRequest = await _httpClient.getUrl(uri);
       final httpResponse = await httpRequest.close();
-      if (httpResponse.statusCode != HttpStatus.OK) {
+      if (httpResponse.statusCode != HttpStatus.ok) {
         return null;
       }
 

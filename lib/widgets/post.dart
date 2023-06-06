@@ -1,11 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:appwrite/appwrite.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
-import 'package:instagram/utils/api.dart';
+import 'package:instagram/consts/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/post_model.dart';
@@ -61,66 +59,66 @@ class PostWidget extends StatelessWidget {
               likePost(context, id);
             },
             child: FutureBuilder(
-              future: ApiClient.storage.getFileDownload(
-                  bucketId: ApiInfo.bucketId, fileId: post.post),
+              future: ApiClient.storage
+                  .getFileDownload(bucketId: BUCKET_ID, fileId: post.post),
               builder: (context, snapshot) {
                 return snapshot.hasData && snapshot.data != null
                     ? ExpandablePageView(
-                      controller: pageController,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Image.network(
-                                post.previewImageURL,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 16, right: 16),
-                                  child: CircleAvatar(
-                                    radius:
-                                        20, // Adjust the radius to your preference
-                                    backgroundColor: Colors.grey,
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: Icon(Icons.launch),
-                                      onPressed: _launchUrl,
-                                    ),
-                                  ))
-                            ],
+                        controller: pageController,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                Image.network(
+                                  post.previewImageURL,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 16, right: 16),
+                                    child: CircleAvatar(
+                                      radius:
+                                          20, // Adjust the radius to your preference
+                                      backgroundColor: Colors.grey,
+                                      child: IconButton(
+                                        color: Colors.white,
+                                        icon: Icon(Icons.launch),
+                                        onPressed: _launchUrl,
+                                      ),
+                                    ))
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Image.memory(
-                                snapshot.data! as Uint8List,
-                                width: double.infinity,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 16, right: 16),
-                                  child: CircleAvatar(
-                                    radius:
-                                        20, // Adjust the radius to your preference
-                                    backgroundColor: Colors.grey,
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: Icon(Icons.launch),
-                                      onPressed: _launchUrl,
-                                    ),
-                                  ))
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                Image.memory(
+                                  snapshot.data! as Uint8List,
+                                  width: double.infinity,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 16, right: 16),
+                                    child: CircleAvatar(
+                                      radius:
+                                          20, // Adjust the radius to your preference
+                                      backgroundColor: Colors.grey,
+                                      child: IconButton(
+                                        color: Colors.white,
+                                        icon: Icon(Icons.launch),
+                                        onPressed: _launchUrl,
+                                      ),
+                                    ))
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                     : CircularProgressIndicator();
               },
             ),

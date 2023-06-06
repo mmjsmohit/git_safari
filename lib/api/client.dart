@@ -1,10 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 
-import '../utils/api.dart';
-
 class ApiClient {
   Client get _client {
-
     Client client = Client();
     client
         .setEndpoint('https://cloud.appwrite.io/v1')

@@ -22,8 +22,8 @@ class SuggestionWidget extends StatelessWidget {
           ),
           child: (icon == "")
               ? Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 13.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 13.0, vertical: 8.0),
                   child: Text(
                     text,
                     style: TextStyle(

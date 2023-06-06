@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,8 +25,7 @@ class GithubItem extends StatelessWidget {
                       style: Theme.of(context).textTheme.displayMedium),
                   Padding(
                     padding: EdgeInsets.only(top: 4.0),
-                    child: Text(
-                        repo.description ?? 'No desription',
+                    child: Text(repo.description ?? 'No desription',
                         style: Theme.of(context).textTheme.bodyMedium),
                   ),
                   Padding(
@@ -38,7 +35,7 @@ class GithubItem extends StatelessWidget {
                         Expanded(
                             child: Text((repo.owner != null) ? repo.owner : '',
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.caption)),
+                                style: Theme.of(context).textTheme.bodySmall)),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +52,8 @@ class GithubItem extends StatelessWidget {
                                         ? '${repo.watchersCount} '
                                         : '0 ',
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.caption),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall),
                               ),
                             ],
                           ),
@@ -64,7 +62,7 @@ class GithubItem extends StatelessWidget {
                             child: Text(
                                 (repo.language != null) ? repo.language : '',
                                 textAlign: TextAlign.end,
-                                style: Theme.of(context).textTheme.caption)),
+                                style: Theme.of(context).textTheme.bodySmall)),
                       ],
                     ),
                   ),

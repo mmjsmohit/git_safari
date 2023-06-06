@@ -1,4 +1,3 @@
-import 'package:appwrite/appwrite.dart';
 class Post {
   String image;
   String name;
@@ -7,9 +6,9 @@ class Post {
   String caption;
   String date;
   bool liked;
-String previewImageURL;
+  String previewImageURL;
   var githubURL;
-  
+
   Post({
     required this.previewImageURL,
     this.githubURL = 'https://github.com/foss42/api-dash',
