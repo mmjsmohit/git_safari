@@ -1,11 +1,9 @@
-import 'dart:typed_data';
 import 'dart:async';
 import 'package:async/async.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram/api/client.dart';
 import 'package:instagram/consts/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,13 +25,6 @@ class PostWidget extends StatefulWidget {
 
 class _PostWidgetState extends State<PostWidget> {
   final PageController pageController = PageController();
-
-  _fetchData() {
-    return widget.memorizer.runOnce(() async {
-      return ApiClient.storage
-          .getFileDownload(bucketId: BUCKET_ID, fileId: widget.post.post);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,91 +83,72 @@ class _PostWidgetState extends State<PostWidget> {
           ),
           Builder(builder: (context) {
             return GestureDetector(
-              onDoubleTap: () {
-                widget.likePost(context, widget.id);
-              },
-              child: FutureBuilder(
-                future: _fetchData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.waiting) {
-                    return ExpandablePageView(
-                      controller: pageController,
+              child: ExpandablePageView(
+                controller: pageController,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(24),
-                                  topRight: Radius.circular(24),
-                                ),
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.contain,
-                                  imageUrl: widget.post.previewImageURL,
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                ),
-                              ),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 16, right: 16),
-                                  child: CircleAvatar(
-                                    radius:
-                                        20, // Adjust the radius to your preference
-                                    backgroundColor: Colors.grey,
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: Icon(Icons.launch),
-                                      onPressed: _launchUrl,
-                                    ),
-                                  ))
-                            ],
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(24),
+                            topRight: Radius.circular(24),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.post.previewImageURL,
+                            fit: BoxFit.contain,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Image.memory(
-                                snapshot.data! as Uint8List,
-                                width: double.infinity,
-                                fit: BoxFit.contain,
+                            padding:
+                                const EdgeInsets.only(bottom: 16, right: 16),
+                            child: CircleAvatar(
+                              radius:
+                                  20, // Adjust the radius to your preference
+                              backgroundColor: Colors.grey,
+                              child: IconButton(
+                                color: Colors.white,
+                                icon: Icon(Icons.launch),
+                                onPressed: _launchUrl,
                               ),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 16, right: 16),
-                                  child: CircleAvatar(
-                                    radius:
-                                        20, // Adjust the radius to your preference
-                                    backgroundColor: Colors.grey,
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: Icon(Icons.launch),
-                                      onPressed: _launchUrl,
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
+                            ))
                       ],
-                    );
-                  } else {
-                    return SizedBox(
-                      height: 200,
-                      child: Center(
-                        child: RefreshProgressIndicator(),
-                      ),
-                    );
-                  }
-                },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl:
+                              '${APPWRITE_URL}/storage/buckets/$BUCKET_ID/files/${widget.post.post}/view?project=$APPWRITE_PROJECT_ID',
+                          width: double.infinity,
+                          fit: BoxFit.contain,
+                        ),
+                        Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 16, right: 16),
+                            child: CircleAvatar(
+                              radius:
+                                  20, // Adjust the radius to your preference
+                              backgroundColor: Colors.grey,
+                              child: IconButton(
+                                color: Colors.white,
+                                icon: Icon(Icons.launch),
+                                onPressed: _launchUrl,
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                ],
               ),
+              onDoubleTap: () {
+                widget.likePost(context, widget.id);
+              },
             );
           }),
           Row(

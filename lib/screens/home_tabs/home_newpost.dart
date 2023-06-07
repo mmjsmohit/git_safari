@@ -54,8 +54,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
           'repoOwner': repoOwner,
           'repoName': repoName,
           'previewImageURL':
-              'https://opengraph.githubassets.com/anyrandomhashvaluebutastring/$repoOwner/$repoName',
-          'language': language
+              'https://opengraph.githubassets.com/YXBwd3JpdGVpc2F3ZXNvbWU=/$repoOwner/$repoName',
         });
 
     result.then((response) {
@@ -81,7 +80,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
       Future result = ApiClient.storage.createFile(
         bucketId: BUCKET_ID,
         fileId: "unique()",
-        file: InputFile(path: image!.path, filename: image.name),
+        file: InputFile.fromPath(path: image!.path, filename: image.name),
       );
 
       result.then((response) {
