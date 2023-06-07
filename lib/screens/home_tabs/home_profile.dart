@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/api/client.dart';
-import 'package:instagram/screens/launch.dart';
+import 'package:instagram/utils/appwrite/auth_api.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/story.dart';
 
@@ -13,25 +14,10 @@ class HomeProfileTab extends StatefulWidget {
 
 class _HomeProfileTabState extends State<HomeProfileTab> {
   String _username = "";
-
-  void logout(BuildContext context) {
-    // Delete the current session.
-    Future result = ApiClient.account.deleteSession(
-      sessionId: 'current',
-    );
-
-    result.then((response) {
-      // Successfully logged out.
-
-      // Remove all the routes and push LaunchScreen.
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LaunchScreen()),
-        ModalRoute.withName('/'),
-      );
-    }).catchError((error) {
-      // Failure
-      print(error.response);
-    });
+  signOut() {
+    final AuthAPI appwrite = context.read<AuthAPI>();
+    appwrite.signOut();
+    print("User Logged out!");
   }
 
   @override
@@ -206,7 +192,7 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                         width: 1.0,
                       ),
                     ),
-                    onPressed: () => logout(context),
+                    onPressed: () => signOut(),
                     child: Text(
                       "Logout",
                       style: TextStyle(

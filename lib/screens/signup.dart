@@ -1,8 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/api/client.dart';
 import 'package:instagram/screens/home.dart';
+import 'package:instagram/screens/login.dart';
+import 'package:instagram/utils/appwrite/auth_api.dart';
 import 'package:instagram/widgets/logo.dart';
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -12,54 +14,47 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirm = TextEditingController();
   final TextEditingController _email = TextEditingController();
 
-  Future<void> signup(BuildContext context) async {
-    // Attempt to create an account.
+  Future<void> signup() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  CircularProgressIndicator(),
+                ]),
+          );
+        });
     try {
-      var result = await ApiClient.account.create(
-          userId: ID.unique(),
-          email: _email.text,
-          password: _password.text,
-          name: _username.text);
-      if (result.status) {
-        // Success, new account created.
-
-        // Now login:
-        login(context);
-
-        Navigator.of(context).push(
+      final AuthAPI appwrite = context.read<AuthAPI>();
+      const snackbar = SnackBar(content: Text('Account created!'));
+      await appwrite.createEmailSession(
+        email: _email.text,
+        password: _password.text,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      Navigator.push(
+          context,
           MaterialPageRoute(
             builder: (context) => HomeScreen(),
-          ),
-        );
-      }
-    } catch (error) {
-      // Failure
-      print(error);
-    }
-  }
-
-  void login(BuildContext context) {
-    // Attempt to login with email and password
-    Future result = ApiClient.account.createEmailSession(
-      email: _email.text,
-      password: _password.text,
-    );
-    result.then((response) {
-      // Success
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          ));
+    } on AppwriteException catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.response['message']),
         ),
       );
-    }).catchError((error) {
-      // Failure
-      print(error.response);
-    });
+    }
   }
 
   @override
@@ -85,6 +80,32 @@ class _SignupScreenState extends State<SignupScreen> {
             GitSafariLogo(padding: EdgeInsets.all(16)),
             Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0),
+              child: TextField(
+                controller: _name,
+                style: TextStyle(fontSize: 14.0, color: Color(0xFFFFFFFF)),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xFF121212),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0x33FFFFFF), width: 1),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0x33FFFFFF), width: 1),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0x33FFFFFF), width: 1),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  hintText: 'Name',
+                  hintStyle:
+                      TextStyle(fontSize: 14.0, color: Color(0x99FFFFFF)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.0, right: 16.0),
               child: TextField(
                 controller: _username,
                 style: TextStyle(fontSize: 14.0, color: Color(0xFFFFFFFF)),
@@ -192,7 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
             GradientButton(
               text: 'Sign Up',
               icon: Icons.edit_note,
-              onPressed: () => signup(context),
+              onPressed: () => signup(),
             ),
             Container(
               height: 60.0,
@@ -225,19 +246,25 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 40.0, right: 5.0),
-                  child: Text(
-                    "Have an account? ",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 12.0, color: Color(0x99FFFFFF)),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.only(top: 40.0),
-                  child: Text(
-                    "Log in.",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 12.0, color: Color(0xFF3797EF)),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Have an account?",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(color: Color(0x99FFFFFF)),
+                      ),
+                      TextButton(
+                        child: Text("Log In."),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ));
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 Spacer(),

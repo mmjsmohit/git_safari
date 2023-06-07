@@ -44,39 +44,40 @@ class AuthAPI extends ChangeNotifier {
       final user = await account.get();
       _status = AuthStatus.authenticated;
       _currentUser = user;
+      notifyListeners();
     } catch (e) {
       _status = AuthStatus.unauthenticated;
-    }
-  }
-
-  Future<User> createUser(
-      {required String email, required String password}) async {
-    notifyListeners();
-
-    try {
-      final user = await account.create(
-          userId: ID.unique(),
-          email: email,
-          password: password,
-          name: 'Simon G');
-      return user;
     } finally {
       notifyListeners();
     }
   }
 
+  Future<User> createUser(
+      {required String email,
+      required String password,
+      required String name,
+      required String username}) async {
+    final user = await account.create(
+      userId: username,
+      email: email,
+      password: password,
+      name: name,
+    );
+    notifyListeners();
+    return user;
+  }
+
   Future<Session> createEmailSession(
       {required String email, required String password}) async {
-    notifyListeners();
-
     try {
       final session =
           await account.createEmailSession(email: email, password: password);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
+      notifyListeners();
       return session;
     } finally {
-      notifyListeners();
+      print("User Logged in! Status is $status");
     }
   }
 
@@ -98,13 +99,5 @@ class AuthAPI extends ChangeNotifier {
     } finally {
       notifyListeners();
     }
-  }
-
-  Future<Preferences> getUserPreferences() async {
-    return await account.getPrefs();
-  }
-
-  updatePreferences({required String feedpref}) async {
-    return account.updatePrefs(prefs: {'feedpref': feedpref});
   }
 }

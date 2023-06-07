@@ -1,7 +1,9 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/api/client.dart';
-import 'package:instagram/screens/home.dart';
+import 'package:instagram/screens/signup.dart';
+import 'package:instagram/utils/appwrite/auth_api.dart';
 import 'package:instagram/widgets/logo.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,23 +16,46 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
-  void login(BuildContext context) {
-    // Attempt to login with email and password
-    Future result = ApiClient.account.createEmailSession(
-      email: _email.text,
-      password: _password.text,
-    );
-    result.then((response) {
-      // Success
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
+  // void login(BuildContext context) {
+  //   // Attempt to login with email and password
+  //   Future result = ApiClient.account.createEmailSession(
+  //     email: _email.text,
+  //     password: _password.text,
+  //   );
+  //   result.then((response) {
+  //     // Success
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => HomeScreen(),
+  //       ),
+  //     );
+  //   }).catchError((error) {
+  //     // Failure
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content:
+  //             Text('Following error has occured: ${error.response['message']}'),
+  //       ),
+  //     );
+  //     print(error.response);
+  //   });
+  // }
+  signIn() async {
+    try {
+      final AuthAPI appwrite = context.read<AuthAPI>();
+      await appwrite.createEmailSession(
+        email: _email.text,
+        password: _password.text,
       );
-    }).catchError((error) {
-      // Failure
-      print(error.response);
-    });
+      // Navigator.pop(context);
+    } on AppwriteException catch (error) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error.response['message']),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   @override
@@ -38,14 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          );
-        }),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -124,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
             GradientButton(
               text: 'Log In',
               icon: Icons.login,
-              onPressed: () => login(context),
+              onPressed: () => signIn(),
             ),
             Container(
               height: 90.0,
@@ -157,19 +174,25 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 40.0, right: 5.0),
-                  child: Text(
-                    "Don't have an account? ",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 12.0, color: Color(0x99FFFFFF)),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.only(top: 40.0),
-                  child: Text(
-                    "Sign up.",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 12.0, color: Color(0xFF3797EF)),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Don't have an account? ",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(color: Color(0x99FFFFFF)),
+                      ),
+                      TextButton(
+                        child: Text("Sign up."),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignupScreen(),
+                              ));
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 Spacer(),

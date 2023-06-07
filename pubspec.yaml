@@ -46,6 +46,7 @@ dependencies:
   async: ^2.10.0
   flutter_svg: ^2.0.5
   story: ^1.0.0+1
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
