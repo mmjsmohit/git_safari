@@ -66,6 +66,7 @@ class _SearchBoxState extends State<SearchBox> {
     var response = await http.get(Uri.parse(
       'https://api.github.com/search/repositories?q=${_searchController.text}',
     ));
+    print("response is:" + response.body);
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       List<dynamic> items = jsonResponse['items'];

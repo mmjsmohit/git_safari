@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/screens/add_story.dart';
 import 'package:instagram/screens/home_tabs/home_home.dart';
 import 'package:instagram/screens/home_tabs/home_newpost.dart';
 import 'package:instagram/screens/home_tabs/home_profile.dart';
@@ -18,7 +19,7 @@ class _HomeScreen extends State<HomeScreen> {
     HomeHomeTab(),
     HomeSearchTab(),
     HomeNewpostTab(),
-    HomeHomeTab(),
+    AddStory(),
     HomeProfileTab(),
   ];
 

@@ -92,6 +92,7 @@ class _SearchState extends State<SearchList> {
     if (_isSearching) {
       return CenterTitle('Searching Github...');
     } else if (_error != null) {
+      print(_error);
       return CenterTitle(_error!);
     } else if (_searchQuery.text.isEmpty) {
       return CenterTitle('Begin Search by typing on search bar');

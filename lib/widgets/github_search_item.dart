@@ -12,8 +12,7 @@ class GithubItem extends StatelessWidget {
     return Card(
       child: InkWell(
           onTap: () {
-            Navigator.pop(context,
-                {'html_url': repo.html_url, 'language': repo.language});
+            Navigator.pop(context, {'html_url': repo.html_url});
           },
           highlightColor: Colors.lightBlueAccent,
           splashColor: Colors.red,
@@ -59,11 +58,11 @@ class GithubItem extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Expanded(
-                            child: Text(
-                                (repo.language != null) ? repo.language : '',
-                                textAlign: TextAlign.end,
-                                style: Theme.of(context).textTheme.bodySmall)),
+                        // Expanded(
+                        //     child: Text(
+                        //         (repo.language != null) ? repo.language : '',
+                        //         textAlign: TextAlign.end,
+                        //         style: Theme.of(context).textTheme.bodySmall)),
                       ],
                     ),
                   ),

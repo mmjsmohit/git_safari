@@ -45,6 +45,7 @@ dependencies:
   cached_network_image: ^3.2.3
   async: ^2.10.0
   flutter_svg: ^2.0.5
+  story: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
