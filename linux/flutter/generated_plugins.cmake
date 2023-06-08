@@ -3,7 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  url_launcher_linux
+        isar_flutter_libs
+        url_launcher_linux
   window_to_front
 )
 

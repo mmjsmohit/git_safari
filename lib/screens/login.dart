@@ -1,7 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+import 'package:gitsafari/main.dart';
 import 'package:gitsafari/screens/signup.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/utils/isar/isar_service.dart';
+import 'package:gitsafari/utils/isar/user_isar_collection.dart';
 import 'package:gitsafari/widgets/buttons.dart';
 import 'package:gitsafari/widgets/logo.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +19,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
   // void login(BuildContext context) {
   //   // Attempt to login with email and password
   //   Future result = ApiClient.account.createEmailSession(
@@ -45,11 +47,22 @@ class _LoginScreenState extends State<LoginScreen> {
   signIn() async {
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
+      final IsarService isar = context.read<IsarService>();
       await appwrite.createEmailSession(
         email: _email.text,
         password: _password.text,
       );
-      // Navigator.pop(context);
+      final user = appwrite.currentUser;
+      final newUserCollection = UserIsarCollection()
+        ..email = _email.text
+        ..username = user.$id
+        ..name = user.name;
+      isar.saveUser(newUserCollection);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LaunchScreen(),
+          ));
     } on AppwriteException catch (error) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -59,15 +72,26 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  signInWithProvider(String provider) {
+  signInWithProvider(String provider) async {
     try {
-      context.read<AuthAPI>().signInWithProvider(provider: provider);
+      await context.read<AuthAPI>().signInWithProvider(provider: provider);
     } on AppwriteException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(error.response['message']),
         backgroundColor: Colors.red,
       ));
     }
+  }
+
+  updateDb() {
+    final AuthAPI appwrite = context.read<AuthAPI>();
+    final IsarService isar = context.read<IsarService>();
+    final user = appwrite.currentUser;
+    final newUserCollection = UserIsarCollection()
+      ..email = _email.text
+      ..username = user.$id
+      ..name = user.name;
+    isar.saveUser(newUserCollection);
   }
 
   @override
@@ -161,7 +185,10 @@ class _LoginScreenState extends State<LoginScreen> {
             GradientSvgButton(
               text: 'Login with GitHub',
               imagePath: 'assets/icons/github/github-original.svg',
-              onPressed: () => signInWithProvider('github'),
+              onPressed: () {
+                signInWithProvider('github');
+                updateDb();
+              },
               color: Colors.white,
             ),
             Container(

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gitsafari/screens/home.dart';
 import 'package:gitsafari/screens/login.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/utils/isar/isar_service.dart';
+import 'package:gitsafari/utils/isar/user_isar_collection.dart';
 import 'package:gitsafari/widgets/buttons.dart';
 import 'package:gitsafari/widgets/logo.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
         });
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
+      final IsarService isar = context.read<IsarService>();
       const snackbar = SnackBar(content: Text('Account created!'));
       await appwrite.createUser(
           email: _email.text,
@@ -47,6 +50,12 @@ class _SignupScreenState extends State<SignupScreen> {
         email: _email.text,
         password: _password.text,
       );
+      final user = appwrite.currentUser;
+      final newUserCollection = UserIsarCollection()
+        ..email = _email.text
+        ..username = user.$id
+        ..name = user.name;
+      isar.saveUser(newUserCollection);
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
       Navigator.push(
@@ -67,7 +76,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
   signUpWithProvider(String provider) {
     try {
+      // final AuthAPI appwrite = context.read<AuthAPI>();
+      // final IsarService isar = context.read<IsarService>();
       context.read<AuthAPI>().signInWithProvider(provider: provider);
+      // final user = appwrite.currentUser;
+      // final newUserCollection = UserIsarCollection()
+      //   ..email = _email.text
+      //   ..username = user.$id
+      //   ..name = user.name;
+      // isar.saveUser(newUserCollection);
       Navigator.pop(context);
     } on AppwriteException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -75,6 +92,17 @@ class _SignupScreenState extends State<SignupScreen> {
         backgroundColor: Colors.red,
       ));
     }
+  }
+
+  updateDb() {
+    final AuthAPI appwrite = context.read<AuthAPI>();
+    final IsarService isar = context.read<IsarService>();
+    final user = appwrite.currentUser;
+    final newUserCollection = UserIsarCollection()
+      ..email = user.email
+      ..username = user.$id
+      ..name = user.name;
+    isar.saveUser(newUserCollection);
   }
 
   @override
@@ -241,7 +269,10 @@ class _SignupScreenState extends State<SignupScreen> {
             GradientSvgButton(
               text: 'Signup with GitHub',
               imagePath: 'assets/icons/github/github-original.svg',
-              onPressed: () => signUpWithProvider('github'),
+              onPressed: () {
+                signUpWithProvider('github');
+                updateDb();
+              },
               color: Colors.white,
             ),
             Container(

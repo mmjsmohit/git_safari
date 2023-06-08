@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gitsafari/api/client.dart';
+import 'package:gitsafari/main.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/utils/isar/isar_service.dart';
+import 'package:gitsafari/widgets/story.dart';
 import 'package:provider/provider.dart';
-
-import '../../widgets/story.dart';
 
 class HomeProfileTab extends StatefulWidget {
   const HomeProfileTab({Key? key}) : super(key: key);
@@ -13,25 +13,29 @@ class HomeProfileTab extends StatefulWidget {
 }
 
 class _HomeProfileTabState extends State<HomeProfileTab> {
-  String _username = "";
-  signOut() {
+  signOut() async {
     final AuthAPI appwrite = context.read<AuthAPI>();
-    appwrite.signOut();
     print("User Logged out!");
+    await appwrite.signOut();
+    await updateDb();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LaunchScreen(),
+        ));
   }
 
-  @override
-  void initState() {
-    super.initState();
-    Future result = ApiClient.account.get();
-    result.then((response) {
-      setState(() {
-        _username = response.name;
-      });
-    }).catchError((error) {
-      print(error.response);
-    });
+  updateDb() async {
+    final IsarService isar = IsarService();
+    await isar.deleteUser();
   }
+
+  // void setUser() async {
+  //   final existingUser = await isar.getUser();
+  //   print(existingUser.toString());
+  //   _username = existingUser!.username!;
+  //   _name = existingUser.name!;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +58,17 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8.0,
                     ),
-                    child: Text(
-                      _username,
-                      style: TextStyle(
-                        color: Color(0xFFF9F9F9),
-                        fontSize: 16.0,
-                      ),
+                    child: FutureBuilder(
+                      future: context.read<IsarService>().getUser(),
+                      builder: (context, snapshot) {
+                        return snapshot.connectionState ==
+                                ConnectionState.waiting
+                            ? CircularProgressIndicator()
+                            : Text(
+                                snapshot.data!.name!,
+                                style: TextStyle(color: Colors.white),
+                              );
+                      },
                     ),
                   ),
                   Image.asset(
@@ -164,9 +173,16 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 12.0, left: 16.0),
-              child: Text(
-                _username,
-                style: TextStyle(color: Color(0xFFF9F9F9), fontSize: 14.0),
+              child: FutureBuilder(
+                future: context.read<IsarService>().getUser(),
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? CircularProgressIndicator()
+                      : Text(
+                          snapshot.data!.username!,
+                          style: TextStyle(color: Colors.white),
+                        );
+                },
               ),
             ),
             Padding(
@@ -192,7 +208,9 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                         width: 1.0,
                       ),
                     ),
-                    onPressed: () => signOut(),
+                    onPressed: () async {
+                      await signOut();
+                    },
                     child: Text(
                       "Logout",
                       style: TextStyle(

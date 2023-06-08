@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitsafari/screens/home.dart';
 import 'package:gitsafari/screens/login.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/utils/isar/isar_service.dart';
 import 'package:provider/provider.dart';
 
 import 'consts/constants.dart';
@@ -9,8 +10,15 @@ import 'consts/constants.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AuthAPI(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthAPI(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => IsarService(),
+        )
+      ],
       child: LaunchScreen(),
     ),
   );
