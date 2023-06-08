@@ -5,7 +5,7 @@ class ApiClient {
     Client client = Client();
     client
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('almostInstagramTest')
+        .setProject('gitsafari')
         .setSelfSigned(status: true);
 
     return client;

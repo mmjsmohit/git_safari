@@ -1,10 +1,11 @@
 import 'dart:async';
+
 import 'package:async/async.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram/consts/constants.dart';
+import 'package:gitsafari/consts/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/post_model.dart';

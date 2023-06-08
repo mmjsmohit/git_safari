@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/screens/home.dart';
-import 'package:instagram/screens/login.dart';
-import 'package:instagram/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/screens/home.dart';
+import 'package:gitsafari/screens/login.dart';
+import 'package:gitsafari/utils/appwrite/auth_api.dart';
 import 'package:provider/provider.dart';
 
 import 'consts/constants.dart';

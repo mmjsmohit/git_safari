@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:gitsafari/consts/constants.dart';
+
 import 'auth_api.dart';
-import 'package:instagram/consts/constants.dart';
 
 class DatabaseAPI {
   Client client = Client();

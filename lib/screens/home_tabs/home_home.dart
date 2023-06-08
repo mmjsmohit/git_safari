@@ -1,9 +1,9 @@
-import 'package:instagram/consts/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/api/client.dart';
-import 'package:instagram/models/post_model.dart';
-import 'package:instagram/widgets/post.dart';
-import 'package:instagram/widgets/story.dart';
+import 'package:gitsafari/api/client.dart';
+import 'package:gitsafari/consts/constants.dart';
+import 'package:gitsafari/models/post_model.dart';
+import 'package:gitsafari/widgets/post.dart';
+import 'package:gitsafari/widgets/story.dart';
 import 'package:story/story_image.dart';
 import 'package:story/story_page_view.dart';
 
@@ -89,7 +89,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
             image: "assets/profile_$profileId.png",
           ));
         });
-        print(_posts);
       }
     }).catchError((error) {
       // Error

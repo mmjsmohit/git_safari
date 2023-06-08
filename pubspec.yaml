@@ -1,4 +1,4 @@
-name: instagram
+name: gitsafari
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -58,6 +58,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  change_app_package_name: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,6 +75,7 @@ flutter:
   assets:
     - assets/icons/android/
     - assets/icons/dart/
+    - assets/icons/github/
     - assets/logo/gitsafari_logo.png
     - assets/logo/gs_logo.png
     - assets/logo.png

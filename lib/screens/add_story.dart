@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
-import 'package:instagram/api/client.dart';
+import 'package:flutter/material.dart';
+import 'package:gitsafari/api/client.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddStory extends StatefulWidget {
@@ -11,7 +11,6 @@ class AddStory extends StatefulWidget {
 }
 
 class _AddStoryState extends State<AddStory> {
-  String _userId = "647dea14076b9c7296a3";
   String _username = "hello_there";
   String _imageId = "";
 
@@ -63,7 +62,7 @@ class _AddStoryState extends State<AddStory> {
       Future result = ApiClient.storage.createFile(
         bucketId: "647ec0289d22774ddc1b",
         fileId: "unique()",
-        file: InputFile(path: image!.path, filename: image.name),
+        file: InputFile.fromPath(path: image!.path, filename: image.name),
       );
 
       result.then((response) {

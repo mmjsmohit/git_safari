@@ -1,8 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/screens/signup.dart';
-import 'package:instagram/utils/appwrite/auth_api.dart';
-import 'package:instagram/widgets/logo.dart';
+import 'package:gitsafari/screens/signup.dart';
+import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/widgets/buttons.dart';
+import 'package:gitsafari/widgets/logo.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -51,6 +52,17 @@ class _LoginScreenState extends State<LoginScreen> {
       // Navigator.pop(context);
     } on AppwriteException catch (error) {
       Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error.response['message']),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  signInWithProvider(String provider) {
+    try {
+      context.read<AuthAPI>().signInWithProvider(provider: provider);
+    } on AppwriteException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(error.response['message']),
         backgroundColor: Colors.red,
@@ -142,6 +154,15 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'Log In',
               icon: Icons.login,
               onPressed: () => signIn(),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            GradientSvgButton(
+              text: 'Login with GitHub',
+              imagePath: 'assets/icons/github/github-original.svg',
+              onPressed: () => signInWithProvider('github'),
+              color: Colors.white,
             ),
             Container(
               height: 90.0,

@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gitsafari/api/client.dart';
+import 'package:gitsafari/consts/constants.dart';
+import 'package:gitsafari/screens/repo_search.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram/api/client.dart';
-import 'package:instagram/consts/constants.dart';
-import 'package:instagram/screens/repo_search.dart';
 
 class HomeNewpostTab extends StatefulWidget {
   const HomeNewpostTab({super.key});

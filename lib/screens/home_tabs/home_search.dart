@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:instagram/widgets/suggestion.dart';
+import 'package:gitsafari/widgets/suggestion.dart';
 
 class HomeSearchTab extends StatelessWidget {
   const HomeSearchTab({Key? key}) : super(key: key);

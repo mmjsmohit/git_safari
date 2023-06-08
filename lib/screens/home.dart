@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/screens/add_story.dart';
-import 'package:instagram/screens/home_tabs/home_home.dart';
-import 'package:instagram/screens/home_tabs/home_newpost.dart';
-import 'package:instagram/screens/home_tabs/home_profile.dart';
-import 'package:instagram/screens/home_tabs/home_search.dart';
+import 'package:gitsafari/screens/add_story.dart';
+import 'package:gitsafari/screens/home_tabs/home_home.dart';
+import 'package:gitsafari/screens/home_tabs/home_newpost.dart';
+import 'package:gitsafari/screens/home_tabs/home_profile.dart';
+import 'package:gitsafari/screens/home_tabs/home_search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

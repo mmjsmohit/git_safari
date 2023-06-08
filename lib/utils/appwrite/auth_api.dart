@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/widgets.dart';
-import 'package:instagram/consts/constants.dart';
+import 'package:gitsafari/consts/constants.dart';
 
 enum AuthStatus {
   uninitialized,

@@ -1,9 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/screens/home.dart';
-import 'package:instagram/screens/login.dart';
-import 'package:instagram/utils/appwrite/auth_api.dart';
-import 'package:instagram/widgets/logo.dart';
+import 'package:gitsafari/screens/home.dart';
+import 'package:gitsafari/screens/login.dart';
+import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/widgets/buttons.dart';
+import 'package:gitsafari/widgets/logo.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -37,11 +38,17 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
       const snackbar = SnackBar(content: Text('Account created!'));
+      await appwrite.createUser(
+          email: _email.text,
+          password: _password.text,
+          name: _name.text,
+          username: _username.text);
       await appwrite.createEmailSession(
         email: _email.text,
         password: _password.text,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -49,11 +56,24 @@ class _SignupScreenState extends State<SignupScreen> {
           ));
     } on AppwriteException catch (e) {
       Navigator.pop(context);
+      print(e.response['message']);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.response['message']),
         ),
       );
+    }
+  }
+
+  signUpWithProvider(String provider) {
+    try {
+      context.read<AuthAPI>().signInWithProvider(provider: provider);
+      Navigator.pop(context);
+    } on AppwriteException catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error.response['message']),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -74,9 +94,9 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 60.0,
-            ),
+            // Container(
+            //   height: 60.0,
+            // ),
             GitSafariLogo(padding: EdgeInsets.all(16)),
             Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0),
@@ -105,7 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+              padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 12),
               child: TextField(
                 controller: _username,
                 style: TextStyle(fontSize: 14.0, color: Color(0xFFFFFFFF)),
@@ -215,8 +235,17 @@ class _SignupScreenState extends State<SignupScreen> {
               icon: Icons.edit_note,
               onPressed: () => signup(),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            GradientSvgButton(
+              text: 'Signup with GitHub',
+              imagePath: 'assets/icons/github/github-original.svg',
+              onPressed: () => signUpWithProvider('github'),
+              color: Colors.white,
+            ),
             Container(
-              height: 60.0,
+              height: 20.0,
             ),
             Row(
               children: [
@@ -271,7 +300,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ],
             ),
             Container(
-              height: 60.0,
+              height: 20.0,
             ),
             Container(
               height: 0.5,

@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:instagram/utils/repo.dart';
+
+import 'package:flutter/material.dart';
+import 'package:gitsafari/utils/repo.dart';
 
 import '../api/github_api.dart';
 import '../widgets/github_search_item.dart';

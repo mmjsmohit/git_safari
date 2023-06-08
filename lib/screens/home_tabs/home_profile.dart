@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/api/client.dart';
-import 'package:instagram/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/api/client.dart';
+import 'package:gitsafari/utils/appwrite/auth_api.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/story.dart';
