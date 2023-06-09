@@ -6,6 +6,7 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gitsafari/consts/constants.dart';
+import 'package:gitsafari/utils/appwrite/avatar_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/post_model.dart';
@@ -29,6 +30,7 @@ class _PostWidgetState extends State<PostWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final AvatarAPI avatars = AvatarAPI();
     return Container(
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -42,12 +44,43 @@ class _PostWidgetState extends State<PostWidget> {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Image.asset(
-                  widget.post.image,
-                  width: 32.0,
-                ),
-              ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: FutureBuilder(
+                    future: avatars.getInitialsAvatar(widget.post.name),
+                    //works for both public file and private file, for private files you need to be logged in
+                    builder: (context, snapshot) {
+                      Widget child = snapshot.hasData && snapshot.data != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.memory(
+                                height: 32,
+                                snapshot.data!,
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 8,
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                      return AnimatedSwitcher(
+                        duration: Duration(seconds: 1),
+                        child: child,
+                      );
+                    },
+                    // child: Image.asset(
+                    //   "assets/profile.png",
+                    //   width: 86.0,
+                    //   fit: BoxFit.fill,
+                    // ),
+                  )
+                  // child: Image.asset(
+                  //   widget.post.image,
+                  //   width: 32.0,
+                  // ),
+                  ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
