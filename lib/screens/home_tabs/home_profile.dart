@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitsafari/main.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
+import 'package:gitsafari/utils/appwrite/avatar_api.dart';
 import 'package:gitsafari/utils/isar/isar_service.dart';
 import 'package:gitsafari/widgets/story.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,8 @@ class HomeProfileTab extends StatefulWidget {
 }
 
 class _HomeProfileTabState extends State<HomeProfileTab> {
+  final AvatarAPI avatars = AvatarAPI();
+
   signOut() async {
     final AuthAPI appwrite = context.read<AuthAPI>();
     print("User Logged out!");
@@ -84,22 +87,34 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Stack(
-                      children: [
-                        Image.asset(
-                          "assets/story_wrap_seen.png",
-                          width: 96.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Image.asset(
-                            "assets/profile.png",
-                            width: 86.0,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ],
+                    padding: const EdgeInsets.fromLTRB(18, 5, 5, 5),
+                    child: FutureBuilder(
+                      future: avatars.getCurrentAvatar(),
+                      //works for both public file and private file, for private files you need to be logged in
+                      builder: (context, snapshot) {
+                        Widget child = snapshot.hasData && snapshot.data != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.memory(
+                                  height: 100,
+                                  snapshot.data!,
+                                ),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 50,
+                                child: CircularProgressIndicator(),
+                              );
+                        return AnimatedSwitcher(
+                          duration: Duration(seconds: 1),
+                          child: child,
+                        );
+                      },
+                      // child: Image.asset(
+                      //   "assets/profile.png",
+                      //   width: 86.0,
+                      //   fit: BoxFit.fill,
+                      // ),
                     ),
                   ),
                   Expanded(
