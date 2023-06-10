@@ -4,6 +4,7 @@ import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/models/post_model.dart';
 import 'package:gitsafari/widgets/post.dart';
 import 'package:gitsafari/widgets/story.dart';
+import 'package:intl/intl.dart';
 import 'package:story/story_image.dart';
 import 'package:story/story_page_view.dart';
 
@@ -35,15 +36,17 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
   List<Post> _posts = [
     Post(
+        date: DateFormat.yMMMEd().format(DateTime.now()),
+        lang: 'dart',
         previewImageURL: "",
         githubURL: 'https://github.com/foss42/api-dash',
         image: "assets/profile_4.png",
         name: "joshua_l",
         location: "Tokyo, Japan",
-        post: "assets/post.png",
+        post: "assets/dpost.png",
         caption:
             "joshua_l The game in Japan was amazing and I want to share some photos",
-        date: "September 19",
+        // date: DateTime.now(),
         liked: false),
   ];
 
@@ -80,13 +83,16 @@ class _HomeHomeTab extends State<HomeHomeTab> {
         int profileId = (i % 4) + 1;
 
         setState(() {
+          print(docs[i].data);
           _posts.add(Post(
+            date: docs[i].data['\$createdAt'],
             previewImageURL: docs[i].data["previewImageURL"],
             githubURL: docs[i].data["githubURL"],
             name: docs[i].data["username"],
             caption: docs[i].data["caption"],
             post: docs[i].data["imageId"],
             image: "assets/profile_$profileId.png",
+            lang: docs[i].data["lang"],
           ));
         });
       }

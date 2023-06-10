@@ -4,9 +4,10 @@ class Repo {
   final String? description;
   final String name;
   final String owner;
+  final String languagesUrl;
 
   Repo(this.html_url, this.watchersCount, this.description, this.name,
-      this.owner);
+      this.owner, this.languagesUrl);
 
   static List<Repo> mapJSONStringToList(List<dynamic> jsonList) {
     return jsonList
@@ -15,7 +16,8 @@ class Repo {
             r['watchers_count'],
             r['description'] != null ? "no description" : r['description'],
             r['name'],
-            r['owner']['login']))
+            r['owner']['login'],
+            r['languages_url']))
         .toList();
   }
 }

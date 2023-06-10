@@ -12,7 +12,8 @@ class GithubItem extends StatelessWidget {
     return Card(
       child: InkWell(
           onTap: () {
-            Navigator.pop(context, {'html_url': repo.html_url});
+            Navigator.pop(context,
+                {'html_url': repo.html_url, 'languagesUrl': repo.languagesUrl});
           },
           highlightColor: Colors.lightBlueAccent,
           splashColor: Colors.red,

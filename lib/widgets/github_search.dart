@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class SearchBox extends StatefulWidget {
   const SearchBox({super.key});
@@ -13,6 +14,12 @@ class _SearchBoxState extends State<SearchBox> {
   final TextEditingController _searchController = TextEditingController();
   List<String> _searchResults = [];
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

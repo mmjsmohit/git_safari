@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gitsafari/api/client.dart';
 import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/screens/repo_search.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class HomeNewpostTab extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
   Map<String, String>? result;
   final TextEditingController _caption = TextEditingController();
   final TextEditingController _githubURL = TextEditingController();
-  String? language;
+  String? _language;
   bool _imageSelected = false;
 
   void createNewPost(BuildContext context) {
@@ -55,6 +56,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
           'repoName': repoName,
           'previewImageURL':
               'https://opengraph.githubassets.com/YXBwd3JpdGVpc2F3ZXNvbWU=/$repoOwner/$repoName',
+          'lang': _language?.toLowerCase(),
         });
 
     result.then((response) {
@@ -172,10 +174,14 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                           );
                           if (result != null) {
                             print("Result received as: $result");
-
+                            var resultLang =
+                                await setLanguage(result!['languagesUrl']!);
                             setState(() {
-                              language = result!['language_url'];
+                              _language = resultLang;
                               _githubURL.text = result!['html_url']!;
+                              // print(language);
+
+                              print('Language is: $_language');
                             });
                           }
                         },
@@ -222,9 +228,12 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                         ? Padding(
                             padding: const EdgeInsets.only(top: 16.0),
                             child: Image.memory(
-                              snapshot.data! as Uint8List,
+                              // height: double.infinity,
+                              snapshot.data!,
+                              height: 500,
                               width: double.infinity,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
+                              // height: 200,
                             ),
                           )
                         : CircularProgressIndicator();
@@ -256,5 +265,12 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
         ]),
       ),
     );
+  }
+
+  Future<String> setLanguage(String languagesUrl) async {
+    Uri uri = Uri.parse(languagesUrl);
+    var response = await http.get(uri);
+    Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+    return decodedResponse.keys.toList().first;
   }
 }

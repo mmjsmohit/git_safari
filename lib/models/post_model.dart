@@ -8,6 +8,7 @@ class Post {
   bool liked;
   String previewImageURL;
   var githubURL;
+  String lang;
 
   Post({
     required this.previewImageURL,
@@ -17,7 +18,8 @@ class Post {
     this.location = "Tokyo, Japan",
     required this.post,
     required this.caption,
-    this.date = "12 September",
+    required this.lang,
+    required this.date,
     this.liked = false,
   });
 }

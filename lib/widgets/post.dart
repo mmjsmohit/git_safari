@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/utils/appwrite/avatar_api.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/post_model.dart';
@@ -108,7 +109,7 @@ class _PostWidgetState extends State<PostWidget> {
                   theme: SvgTheme(currentColor: Colors.transparent),
                   // colorFilter:>???
                   // ColorFilter.mode(Colors.white, BlendMode.softLight),
-                  'assets/icons/dart/dart-plain.svg',
+                  'assets/icons/${widget.post.lang}/.svg',
                   width: 50,
                   height: 50,
                 ),
@@ -277,7 +278,9 @@ class _PostWidgetState extends State<PostWidget> {
           Padding(
             padding: const EdgeInsets.only(left: 14.0, top: 13.0, bottom: 14.0),
             child: Text(
-              widget.post.date,
+              // "Date",
+              DateFormat.yMMMEd().format(DateTime.parse(widget.post.date)),
+              // DateFormat().add_yMMMMd().format(widget.post.date),
               style: TextStyle(
                 color: Color(0x99FFFFFF),
                 fontSize: 11.0,
