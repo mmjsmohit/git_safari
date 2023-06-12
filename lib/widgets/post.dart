@@ -6,8 +6,11 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gitsafari/consts/constants.dart';
+import 'package:gitsafari/utils/appwrite/auth_api.dart';
 import 'package:gitsafari/utils/appwrite/avatar_api.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/post_model.dart';
@@ -17,9 +20,13 @@ class PostWidget extends StatefulWidget {
   Post post;
   int id;
   final memorizer = AsyncMemoizer();
-  Function(BuildContext, int) likePost;
+  Function(BuildContext, String, String, List<dynamic>) upvotePost;
+
   PostWidget(
-      {Key? key, required this.post, required this.id, required this.likePost})
+      {Key? key,
+      required this.post,
+      required this.id,
+      required this.upvotePost})
       : super(key: key);
 
   @override
@@ -32,6 +39,7 @@ class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
     final AvatarAPI avatars = AvatarAPI();
+    final auth = context.watch<AuthAPI>();
     return Container(
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -182,7 +190,8 @@ class _PostWidgetState extends State<PostWidget> {
                 ],
               ),
               onDoubleTap: () {
-                widget.likePost(context, widget.id);
+                widget.upvotePost(context, widget.post.docId,
+                    auth.currentUser.$id, widget.post.upvotes);
               },
             );
           }),
@@ -194,38 +203,42 @@ class _PostWidgetState extends State<PostWidget> {
                   left: 14.0,
                   bottom: 16.0,
                 ),
-                child: Builder(builder: (context) {
-                  return IconButton(
-                    constraints: BoxConstraints(),
-                    padding: EdgeInsets.zero,
-                    icon: Image.asset(
-                      (widget.post.liked)
-                          ? "assets/liked_button.png"
-                          : "assets/nav_notif.png",
-                      width: 24.0,
-                    ),
-                    onPressed: () {
-                      widget.likePost(context, widget.id);
-                    },
-                  );
-                }),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 13.5,
-                  left: 14.0,
-                  bottom: 16.0,
-                ),
-                child: IconButton(
-                  constraints: BoxConstraints(),
-                  padding: EdgeInsets.zero,
-                  icon: Image.asset(
-                    "assets/comment.png",
-                    width: 24.0,
-                  ),
-                  onPressed: () {},
+                child: Builder(
+                  builder: (context) {
+                    return IconButton(
+                      constraints: BoxConstraints(),
+                      padding: EdgeInsets.zero,
+                      icon: Icon(
+                        (widget.post.upvotes.contains(auth.currentUser.$id))
+                            ? Icons.thumb_up_rounded
+                            : Icons.thumb_up_outlined,
+                        size: 24,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        widget.upvotePost(context, widget.post.docId,
+                            auth.currentUser.$id, widget.post.upvotes);
+                      },
+                    );
+                  },
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     top: 13.5,
+              //     left: 14.0,
+              //     bottom: 16.0,
+              //   ),
+              //   child: IconButton(
+              //     constraints: BoxConstraints(),
+              //     padding: EdgeInsets.zero,
+              //     icon: Image.asset(
+              //       "assets/comment.png",
+              //       width: 24.0,
+              //     ),
+              //     onPressed: () {},
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(
                   top: 13.5,
@@ -239,24 +252,54 @@ class _PostWidgetState extends State<PostWidget> {
                     "assets/messanger.png",
                     width: 24.0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Share.share(
+                      "Check out this cool GitHub Repository I found on Git Safari: ${widget.post.githubURL}",
+                    );
+                  },
+                ),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 13.5,
+                  right: 14.0,
+                  bottom: 16.0,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_upward,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      widget.post.upvotes.length.toString(),
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
                 ),
               ),
             ],
           ),
           Row(
             children: [
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 14.0),
+              //   child: Image.asset(
+              //     "assets/profile_1.png",
+              //     width: 17.0,
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 14.0),
-                child: Image.asset(
-                  "assets/profile_1.png",
-                  width: 17.0,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
-                  "Liked by craig_love and 44,686 others",
+                  widget.post.upvotes.length > 0
+                      ? (widget.post.upvotes.length > 2
+                          ? "Upvoted by ${widget.post.upvotes.first} and ${widget.post.upvotes.length - 1} others."
+                          : "Upvoted by ${widget.post.upvotes.first}")
+                      : "No one has upvoted",
+
+                  // "Upvoted by ${widget.post.upvotes.toString()}",
                   style: TextStyle(
                     color: Color(0xFFF9F9F9),
                     fontSize: 13.0,

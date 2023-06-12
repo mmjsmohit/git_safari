@@ -36,6 +36,8 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
   List<Post> _posts = [
     Post(
+        docId: '',
+        upvotes: [],
         date: DateFormat.yMMMEd().format(DateTime.now()),
         lang: 'dart',
         previewImageURL: "",
@@ -66,6 +68,41 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     });
   }
 
+  void upvotePost(BuildContext context, String docId, String username,
+      List<dynamic> upvotes) {
+    List<dynamic> newUpvoteList = upvotes;
+    if (upvotes.contains(username)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "You have already upvoted this repository!",
+          ),
+        ),
+      );
+    } else {
+      newUpvoteList.add(username);
+      Future result = ApiClient.databases.updateDocument(
+        databaseId: APPWRITE_DATABASE_ID,
+        collectionId: POST_COLLECTION_ID,
+        documentId: docId,
+        data: {'upvotes': newUpvoteList},
+      );
+      result.then((response) {
+        // Success.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Post Upvoted!",
+            ),
+          ),
+        );
+      }).catchError((error) {
+        // Failure.
+        print(error.response);
+      });
+    }
+  }
+
   void updateList() {
     _posts = [];
 
@@ -83,8 +120,9 @@ class _HomeHomeTab extends State<HomeHomeTab> {
         int profileId = (i % 4) + 1;
 
         setState(() {
-          print(docs[i].data);
           _posts.add(Post(
+            docId: docs[i].data['\$id'],
+            upvotes: docs[i].data['upvotes'],
             date: docs[i].data['\$createdAt'],
             previewImageURL: docs[i].data["previewImageURL"],
             githubURL: docs[i].data["githubURL"],
@@ -256,7 +294,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                 return PostWidget(
                   post: _posts[i],
                   id: i,
-                  likePost: likePost,
+                  upvotePost: upvotePost,
                 );
               },
             ),

@@ -1,4 +1,5 @@
 class Post {
+  String docId;
   String image;
   String name;
   String location;
@@ -9,8 +10,11 @@ class Post {
   String previewImageURL;
   var githubURL;
   String lang;
+  List<dynamic> upvotes;
 
   Post({
+    required this.docId,
+    required this.upvotes,
     required this.previewImageURL,
     this.githubURL = 'https://github.com/foss42/api-dash',
     required this.image,
