@@ -57,6 +57,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
           'previewImageURL':
               'https://opengraph.githubassets.com/YXBwd3JpdGVpc2F3ZXNvbWU=/$repoOwner/$repoName',
           'lang': _language?.toLowerCase(),
+          'upvotes': []
         });
 
     result.then((response) {
