@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:gitsafari/api/client.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:core';
 
 class AddStory extends StatefulWidget {
   const AddStory({super.key});
@@ -30,13 +31,18 @@ class _AddStoryState extends State<AddStory> {
       return;
     }
     // Create a new document in our posts collection.
+    String dt = DateTime.now().toString();
+    DateTime dta = DateTime.parse(dt);
+    print(dt);
+    print(dta);
     Future result = ApiClient.databases.createDocument(
-        databaseId: "647fa08a3dadb01865c2",
-        collectionId: "647fa095175374d55480",
+        databaseId: "6481a01aac2dfa64e4f8",
+        collectionId: "6481a107205097a5ab41",
         documentId: "unique()",
         data: {
           'username': _username,
           'image-id': _imageId,
+          'createdAt': dt,
         });
 
     result.then((response) {
@@ -44,7 +50,7 @@ class _AddStoryState extends State<AddStory> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Image posted!",
+            "Story posted!",
           ),
         ),
       );
@@ -60,7 +66,7 @@ class _AddStoryState extends State<AddStory> {
     try {
       // Upload the image file to appwrite storage.
       Future result = ApiClient.storage.createFile(
-        bucketId: "647ec0289d22774ddc1b",
+        bucketId: "6481a1c504e251c5d4b0",
         fileId: "unique()",
         file: InputFile.fromPath(path: image!.path, filename: image.name),
       );
@@ -99,6 +105,7 @@ class _AddStoryState extends State<AddStory> {
     return SafeArea(
       child: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               child: Text("Select Image"),
