@@ -167,7 +167,7 @@ class _PostWidgetState extends State<PostWidget> {
                       children: [
                         CachedNetworkImage(
                           imageUrl:
-                              '${APPWRITE_URL}/storage/buckets/$BUCKET_ID/files/${widget.post.post}/view?project=$APPWRITE_PROJECT_ID',
+                              '$APPWRITE_URL/storage/buckets/$BUCKET_ID/files/${widget.post.post}/view?project=$APPWRITE_PROJECT_ID',
                           width: double.infinity,
                           fit: BoxFit.contain,
                         ),
@@ -208,13 +208,21 @@ class _PostWidgetState extends State<PostWidget> {
                     return IconButton(
                       constraints: BoxConstraints(),
                       padding: EdgeInsets.zero,
-                      icon: Icon(
-                        (widget.post.upvotes.contains(auth.currentUser.$id))
-                            ? Icons.thumb_up_rounded
-                            : Icons.thumb_up_outlined,
-                        size: 24,
-                        color: Colors.white,
-                      ),
+                      // icon: Icon(
+                      icon: (widget.post.upvotes.contains(auth.currentUser.$id))
+                          ? Icon(
+                              Icons.arrow_circle_up,
+                              color: Colors.green,
+                              size: 24,
+                            )
+                          : Icon(
+                              Icons.arrow_circle_up_outlined,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                      //   size: 24,
+                      //   color: Colors.white,
+                      // ),
                       onPressed: () {
                         widget.upvotePost(context, widget.post.docId,
                             auth.currentUser.$id, widget.post.upvotes);
@@ -248,9 +256,9 @@ class _PostWidgetState extends State<PostWidget> {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
-                  icon: Image.asset(
-                    "assets/messanger.png",
-                    width: 24.0,
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.white,
                   ),
                   onPressed: () {
                     Share.share(
@@ -293,8 +301,8 @@ class _PostWidgetState extends State<PostWidget> {
               Padding(
                 padding: const EdgeInsets.only(left: 14.0),
                 child: Text(
-                  widget.post.upvotes.length > 0
-                      ? (widget.post.upvotes.length > 2
+                  widget.post.upvotes.isNotEmpty
+                      ? (widget.post.upvotes.length >= 2
                           ? "Upvoted by ${widget.post.upvotes.first} and ${widget.post.upvotes.length - 1} others."
                           : "Upvoted by ${widget.post.upvotes.first}")
                       : "No one has upvoted",
