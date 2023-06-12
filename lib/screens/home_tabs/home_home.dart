@@ -1,6 +1,9 @@
+import 'package:appwrite/appwrite.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+import 'package:gitsafari/consts/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gitsafari/api/client.dart';
-import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/models/post_model.dart';
 import 'package:gitsafari/widgets/post.dart';
 import 'package:gitsafari/widgets/story.dart';
@@ -15,24 +18,30 @@ class HomeHomeTab extends StatefulWidget {
   _HomeHomeTab createState() => _HomeHomeTab();
 }
 
+class Pair<String1, String2> {
+  final String username;
+  final String image_id;
+
+  Pair(this.username, this.image_id);
+}
+
 class UserModel {
   UserModel(this.stories, this.userName, this.imageUrl);
 
-  final List<StoryModel> stories;
+  final String stories;
   final String userName;
   final String imageUrl;
 }
 
-class StoryModel {
-  StoryModel(this.imageUrl);
-
-  final String imageUrl;
-}
+List<Pair> _storymap = [];
+List<String> users = [];
+List<UserModel> _sampleuser = [];
 
 class _HomeHomeTab extends State<HomeHomeTab> {
   String _username = "";
 
   var subscription;
+  var storysubscription;
 
   List<Post> _posts = [
     Post(
@@ -67,8 +76,33 @@ class _HomeHomeTab extends State<HomeHomeTab> {
       _posts = List.from(newPosts);
     });
   }
+  
+  void updateStoryList() {
+    _sampleuser = [];
+    _storymap = [];
+    users = [];
+    Future result = ApiClient.databases.listDocuments(
+        databaseId: "6481a01aac2dfa64e4f8",
+        collectionId: "6481a107205097a5ab41");
 
-  void upvotePost(BuildContext context, String docId, String username,
+    result.then((response) {
+      List docs = response.documents;
+      print(docs);
+      for (int i = 0; i < docs.length; ++i) {
+        setState(() {
+          users.add(docs[i].data["username"]);
+          _storymap
+              .add(Pair(docs[i].data["username"], docs[i].data["image-id"]));
+        });
+      }
+      users.toSet().toList();
+      _storymap.forEach((value) {
+        _sampleuser.add(UserModel(value.image_id, value.username,
+            "https://images.unsplash.com/photo-1609262772830-0decc49ec18c?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzMDF8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"));
+      });
+    });
+    
+    void upvotePost(BuildContext context, String docId, String username,
       List<dynamic> upvotes) {
     List<dynamic> newUpvoteList = upvotes;
     if (upvotes.contains(username)) {
@@ -101,6 +135,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
         print(error.response);
       });
     }
+
   }
 
   void updateList() {
@@ -162,14 +197,23 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     subscription = ApiClient.realtime.subscribe([
       'databases.$APPWRITE_DATABASE_ID.collections.$POST_COLLECTION_ID.documents'
     ]);
+    //Subscribe to changes in stories
+    storysubscription = ApiClient.realtime.subscribe([
+      'datbases.6481a01aac2dfa64e4f8.collections.6481a107205097a5ab41.documents'
+    ]);
 
     // Call updateList every time a change has been detected.
     subscription.stream.listen((response) {
       updateList();
     });
+    // Call updateStories every time change has been detected
+    storysubscription.stream.listen((response) {
+      updateStoryList();
+    });
 
     // Set the list once in initState.
     updateList();
+    updateStoryList();
   }
 
   @override
@@ -178,6 +222,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
 
     // Close the subscription when tab is disposed.
     subscription.close();
+    storysubscription.close();
   }
 
   @override
@@ -215,77 +260,20 @@ class _HomeHomeTab extends State<HomeHomeTab> {
             ),
           ),
           SizedBox(
-            height: 110.0,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                GestureDetector(
-                  child: StoryWid(),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StoryPage(),
-                      )),
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile.png",
-                    width: 56.0,
-                  ),
-                  name: _username,
-                  seen: false,
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile_1.png",
-                    width: 56.0,
-                  ),
-                  name: "zachjohn",
-                  seen: false,
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile_2.png",
-                    width: 56.0,
-                  ),
-                  name: "kieron_d",
-                  seen: false,
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile_3.png",
-                    width: 56.0,
-                  ),
-                  name: "craig_joe",
-                  seen: false,
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile_1.png",
-                    width: 56.0,
-                  ),
-                  name: "zachjohn",
-                  seen: false,
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile_2.png",
-                    width: 56.0,
-                  ),
-                  name: "kieron_d",
-                  seen: false,
-                ),
-                StoryWidget(
-                  image: Image.asset(
-                    "assets/profile_3.png",
-                    width: 56.0,
-                  ),
-                  name: "craig_joe",
-                  seen: false,
-                ),
-              ],
-            ),
-          ),
+              height: 110.0,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: StoryWid(username: users[index]),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StoryPage(),
+                          )),
+                    );
+                  })),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.zero,
@@ -308,34 +296,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     );
   }
 }
-
-final sampleUsers = [
-  UserModel([
-    StoryModel(
-        "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixid=MXwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxN3x8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-    StoryModel(
-        "https://images.unsplash.com/photo-1609418426663-8b5c127691f9?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNXx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-    StoryModel(
-        "https://images.unsplash.com/photo-1609444074870-2860a9a613e3?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1Nnx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-    StoryModel(
-        "https://images.unsplash.com/photo-1609504373567-acda19c93dc4?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1MHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-  ], "User1",
-      "https://images.unsplash.com/photo-1609262772830-0decc49ec18c?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzMDF8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-  UserModel([
-    StoryModel(
-        "https://images.unsplash.com/photo-1609439547168-c973842210e1?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4Nnx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-  ], "User2",
-      "https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?ixid=MXwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzMjN8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-  UserModel([
-    StoryModel(
-        "https://images.unsplash.com/photo-1609421139394-8def18a165df?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMDl8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-    StoryModel(
-        "https://images.unsplash.com/photo-1609377375732-7abb74e435d9?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxODJ8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-    StoryModel(
-        "https://images.unsplash.com/photo-1560925978-3169a42619b2?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMjF8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-  ], "User3",
-      "https://images.unsplash.com/photo-1609127102567-8a9a21dc27d8?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzOTh8fHxlbnwwfHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-];
 
 class StoryPage extends StatefulWidget {
   const StoryPage({Key? key}) : super(key: key);
@@ -362,116 +322,90 @@ class _StoryPageState extends State<StoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StoryPageView(
-        itemBuilder: (context, pageIndex, storyIndex) {
-          final user = sampleUsers[pageIndex];
-          final story = user.stories[storyIndex];
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: Container(color: Colors.black),
-              ),
-              Positioned.fill(
-                child: StoryImage(
-                  key: ValueKey(story.imageUrl),
-                  imageProvider: NetworkImage(
-                    story.imageUrl,
+    return SafeArea(
+      child: Scaffold(
+        body: StoryPageView(
+          itemBuilder: (context, pageIndex, storyIndex) {
+            final user = _sampleuser[pageIndex];
+            final story = user.stories[storyIndex];
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(color: Colors.black),
+                ),
+                Positioned.fill(
+                  child: StoryImage(
+                    key: ValueKey(story),
+                    imageProvider: CachedNetworkImageProvider(
+                        '${APPWRITE_URL}/storage/buckets/6481a1c504e251c5d4b0/files/${user.stories}/view?project=$APPWRITE_PROJECT_ID&mode=admin'),
+                    fit: BoxFit.fitWidth,
                   ),
-                  fit: BoxFit.fitWidth,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 44, left: 8),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(user.imageUrl),
-                          fit: BoxFit.cover,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      user.userName,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-        gestureItemBuilder: (context, pageIndex, storyIndex) {
-          return Stack(children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 32),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  color: Colors.white,
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            if (pageIndex == 0)
-              Center(
-                child: ElevatedButton(
-                  child: const Text('show modal bottom sheet'),
-                  onPressed: () async {
-                    indicatorAnimationController.value =
-                        IndicatorAnimationCommand.pause;
-                    await showModalBottomSheet(
-                      context: context,
-                      builder: (context) => SizedBox(
-                        height: MediaQuery.of(context).size.height / 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Text(
-                            'Look! The indicator is now paused\n\n'
-                            'It will be coutinued after closing the modal bottom sheet.',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                            textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.only(top: 44, left: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 32,
+                        width: 32,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(user.imageUrl),
+                            fit: BoxFit.cover,
                           ),
+                          shape: BoxShape.circle,
                         ),
                       ),
-                    );
-                    indicatorAnimationController.value =
-                        IndicatorAnimationCommand.resume;
-                  },
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        user.userName,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+          gestureItemBuilder: (context, pageIndex, storyIndex) {
+            return Stack(children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    color: Colors.white,
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
               ),
-          ]);
-        },
-        indicatorAnimationController: indicatorAnimationController,
-        initialStoryIndex: (pageIndex) {
-          if (pageIndex == 0) {
+            ]);
+          },
+          indicatorAnimationController: indicatorAnimationController,
+          initialStoryIndex: (pageIndex) {
+            if (pageIndex == 0) {
+              return 1;
+            }
+            return 0;
+          },
+          pageLength: _sampleuser.length,
+          storyLength: (int pageIndex) {
             return 1;
-          }
-          return 0;
-        },
-        pageLength: sampleUsers.length,
-        storyLength: (int pageIndex) {
-          return sampleUsers[pageIndex].stories.length;
-        },
-        onPageLimitReached: () {
-          Navigator.pop(context);
-        },
+          },
+          onPageLimitReached: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
     );
   }

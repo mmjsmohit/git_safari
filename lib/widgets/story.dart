@@ -51,49 +51,35 @@ class StoryWidget extends StatelessWidget {
 }
 
 class StoryWid extends StatelessWidget {
-  const StoryWid({super.key});
+  final String username;
+  const StoryWid({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        elevation: 4,
-        shadowColor: Colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        color: Colors.grey.shade700,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
+    return Container(
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.only(left: 10),
+      decoration: BoxDecoration(
+          color: Color(0xff111625),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      child: Row(
+        children: [
+          Container(
+            height: 70,
+            width: 70,
+            child: Image.asset("assets/profile_2.png"),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(0, 56, 53, 53),
-                  Color.fromARGB(126, 70, 62, 62),
-                  Color.fromARGB(255, 55, 112, 86),
-                  Color.fromARGB(193, 18, 183, 100)
-                ],
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  height: 70,
-                  width: 70,
-                  child: Image.asset("assets/profile_2.png"),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    "hello_there",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                )
-              ],
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
           ),
-        ));
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              username,
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
