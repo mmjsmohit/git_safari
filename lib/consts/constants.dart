@@ -229,7 +229,10 @@ const Map<String, List<String>> kResourcesList = {
   "sdl": [],
   "selenium": [],
   "sequelize": [],
-  "shell": [],
+  "shell": [
+    "https://www.youtube.com/watch?v=tK9Oc6AEnR4&pp=ygUVbGVhcm4gc2hlbGwgc2NyaXB0aW5n",
+    "https://www.youtube.com/watch?v=I4EWvMFj37g&t=23s&pp=ygUVbGVhcm4gc2hlbGwgc2NyaXB0aW5n"
+  ],
   "shopware": [],
   "shotgrid": [],
   "sketch": [],

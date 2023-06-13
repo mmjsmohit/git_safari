@@ -55,6 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
         ..email = _email.text
         ..username = user.$id
         ..name = user.name;
+      appwrite.account.updatePrefs(prefs: {"bio": ""});
       isar.saveUser(newUserCollection);
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
@@ -78,7 +79,9 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       // final AuthAPI appwrite = context.read<AuthAPI>();
       // final IsarService isar = context.read<IsarService>();
-      context.read<AuthAPI>().signInWithProvider(provider: provider);
+      final appwrite = context.read<AuthAPI>();
+      appwrite.signInWithProvider(provider: provider);
+      appwrite.account.updatePrefs(prefs: {"bio": ""});
       // final user = appwrite.currentUser;
       // final newUserCollection = UserIsarCollection()
       //   ..email = _email.text

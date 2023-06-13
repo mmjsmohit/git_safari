@@ -16,6 +16,8 @@ class HomeProfileTab extends StatefulWidget {
 class _HomeProfileTabState extends State<HomeProfileTab> {
   final AvatarAPI avatars = AvatarAPI();
 
+  final TextEditingController _bioController = TextEditingController();
+
   signOut() async {
     final AuthAPI appwrite = context.read<AuthAPI>();
     print("User Logged out!");
@@ -201,14 +203,106 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 4.0, left: 16.0),
-              child: Text(
-                "Digital goodies designer @pixsellz\nEverything is designed.",
-                style: TextStyle(color: Color(0xFFF9F9F9), fontSize: 14.0),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: FutureBuilder(
+                  future: context.read<AuthAPI>().account.getPrefs(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SizedBox(
+                          height: 10,
+                        );
+                      } else {
+                        return Text(
+                          snapshot.data?.data['bio'],
+                          style: TextStyle(
+                              color: Color(0xFFF9F9F9), fontSize: 14.0),
+                        );
+                      }
+                    } else {
+                      return Text(
+                        'No bio found. Enter a bio by clicking below!',
+                        style:
+                            TextStyle(color: Color(0xFFF9F9F9), fontSize: 14.0),
+                      );
+                    }
+                  }
+                  // snapshot.connectionState ==
+                  //         ConnectionState.waiting
+                  //     ? SizedBox(
+                  //         height: 10,
+                  //       )
+                  //     : Text(
+                  //         snapshot.data?.data['bio'],
+                  //         style:
+                  //             TextStyle(color: Color(0xFFF9F9F9), fontSize: 14.0),
+                  //       ),
+                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: Builder(builder: (context) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      side: BorderSide(
+                        color: Color(0x27FFFFFF),
+                        width: 1.0,
+                      ),
+                    ),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        backgroundColor: Color(0xFF121212),
+                        title: const Text(
+                          'Edit your bio',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        content: TextField(
+                            cursorColor: Colors.white,
+                            controller: _bioController,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              hintText: "Bio",
+                              hintStyle: TextStyle(color: Colors.grey),
+                            ),
+                            style: TextStyle(color: Colors.white)),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              context.read<AuthAPI>().account.updatePrefs(
+                                  prefs: {"bio": _bioController.text});
+
+                              Navigator.pop(context);
+                              setState(() {});
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    child: Text(
+                      "Edit your bio",
+                      style: TextStyle(
+                        color: Color(0xFFF9F9F9),
+                        fontSize: 13.0,
+                      ),
+                    ),
+                  );
+                }),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SizedBox(
                 width: double.infinity,
                 child: Builder(builder: (context) {
