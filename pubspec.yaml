@@ -1,0 +1,431 @@
+name: gitsafari
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  flutter_staggered_grid_view: ^0.6.2
+  appwrite: ^9.0.0
+  image_picker: ^0.8.5+3
+  dart_appwrite: ^8.0.0
+  url_launcher: ^6.1.11
+  expandable_page_view: ^1.0.17
+  http: ^0.13.6
+  date_format: ^2.0.7
+  cached_network_image: ^3.2.3
+  async: ^2.10.0
+  flutter_svg: ^2.0.5
+  story: ^1.0.0+1
+  provider: ^6.0.5
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  path_provider: ^2.0.15
+  intl: ^0.18.1
+  share_plus: ^7.0.2
+  link_preview_generator: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+  change_app_package_name: ^1.1.0
+  isar_generator: ^3.1.0+1
+  build_runner: ^2.4.5
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/icons/aarch64/.svg
+    - assets/icons/adonisjs/.svg
+    - assets/icons/aftereffects/.svg
+    - assets/icons/amazonwebservices/.svg
+    - assets/icons/anaconda/.svg
+    - assets/icons/android/.svg
+    - assets/icons/androidstudio/.svg
+    - assets/icons/angularjs/.svg
+    - assets/icons/ansible/.svg
+    - assets/icons/apache/.svg
+    - assets/icons/apachekafka/.svg
+    - assets/icons/appcelerator/.svg
+    - assets/icons/apple/.svg
+    - assets/icons/appwrite/.svg
+    - assets/icons/arduino/.svg
+    - assets/icons/argocd/.svg
+    - assets/icons/atom/.svg
+    - assets/icons/azure/.svg
+    - assets/icons/babel/.svg
+    - assets/icons/backbonejs/.svg
+    - assets/icons/bamboo/.svg
+    - assets/icons/bash/.svg
+    - assets/icons/behance/.svg
+    - assets/icons/bitbucket/.svg
+    - assets/icons/blender/.svg
+    - assets/icons/bootstrap/.svg
+    - assets/icons/bower/.svg
+    - assets/icons/bulma/.svg
+    - assets/icons/c/.svg
+    - assets/icons/cakephp/.svg
+    - assets/icons/canva/.svg
+    - assets/icons/centos/.svg
+    - assets/icons/ceylon/.svg
+    - assets/icons/chrome/.svg
+    - assets/icons/circleci/.svg
+    - assets/icons/clojure/.svg
+    - assets/icons/clojurescript/.svg
+    - assets/icons/cmake/.svg
+    - assets/icons/codecov/.svg
+    - assets/icons/codeigniter/.svg
+    - assets/icons/codepen/.svg
+    - assets/icons/coffeescript/.svg
+    - assets/icons/composer/.svg
+    - assets/icons/confluence/.svg
+    - assets/icons/couchdb/.svg
+    - assets/icons/c++/.svg
+    - assets/icons/crystal/.svg
+    - assets/icons/csharp/.svg
+    - assets/icons/css3/.svg
+    - assets/icons/cucumber/.svg
+    - assets/icons/d3js/.svg
+    - assets/icons/dart/.svg
+    - assets/icons/debian/.svg
+    - assets/icons/denojs/.svg
+    - assets/icons/devicon/.svg
+    - assets/icons/digitalocean/.svg
+    - assets/icons/discordjs/.svg
+    - assets/icons/django/.svg
+    - assets/icons/docker/.svg
+    - assets/icons/doctrine/.svg
+    - assets/icons/dot-net/.svg
+    - assets/icons/dotnetcore/.svg
+    - assets/icons/dropwizard/.svg
+    - assets/icons/drupal/.svg
+    - assets/icons/electron/.svg
+    - assets/icons/eleventy/.svg
+    - assets/icons/elixir/.svg
+    - assets/icons/elm/.svg
+    - assets/icons/embeddedc/.svg
+    - assets/icons/ember/.svg
+    - assets/icons/erlang/.svg
+    - assets/icons/eslint/.svg
+    - assets/icons/express/.svg
+    - assets/icons/facebook/.svg
+    - assets/icons/fastapi/.svg
+    - assets/icons/feathersjs/.svg
+    - assets/icons/fedora/.svg
+    - assets/icons/figma/.svg
+    - assets/icons/filezilla/.svg
+    - assets/icons/firebase/.svg
+    - assets/icons/firefox/.svg
+    - assets/icons/flask/.svg
+    - assets/icons/flutter/.svg
+    - assets/icons/foundation/.svg
+    - assets/icons/fsharp/.svg
+    - assets/icons/gatling/.svg
+    - assets/icons/gatsby/.svg
+    - assets/icons/gcc/.svg
+    - assets/icons/gentoo/.svg
+    - assets/icons/gimp/.svg
+    - assets/icons/git/.svg
+    - assets/icons/github/.svg
+    - assets/icons/gitlab/.svg
+    - assets/icons/gitter/.svg
+    - assets/icons/go/.svg
+    - assets/icons/godot/.svg
+    - assets/icons/google/.svg
+    - assets/icons/googlecloud/.svg
+    - assets/icons/gradle/.svg
+    - assets/icons/grafana/.svg
+    - assets/icons/grails/.svg
+    - assets/icons/graphql/.svg
+    - assets/icons/groovy/.svg
+    - assets/icons/grunt/.svg
+    - assets/icons/gulp/.svg
+    - assets/icons/handlebars/.svg
+    - assets/icons/haskell/.svg
+    - assets/icons/haxe/.svg
+    - assets/icons/heroku/.svg
+    - assets/icons/html5/.svg
+    - assets/icons/hugo/.svg
+    - assets/icons/ie10/.svg
+    - assets/icons/ifttt/.svg
+    - assets/icons/illustrator/.svg
+    - assets/icons/inkscape/.svg
+    - assets/icons/intellij/.svg
+    - assets/icons/ionic/.svg
+    - assets/icons/jamstack/.svg
+    - assets/icons/jasmine/.svg
+    - assets/icons/java/.svg
+    - assets/icons/javascript/.svg
+    - assets/icons/jeet/.svg
+    - assets/icons/jenkins/.svg
+    - assets/icons/jest/.svg
+    - assets/icons/jetbrains/.svg
+    - assets/icons/jira/.svg
+    - assets/icons/jquery/.svg
+    - assets/icons/julia/.svg
+    - assets/icons/jupyter/.svg
+    - assets/icons/k3s/.svg
+    - assets/icons/kaggle/.svg
+    - assets/icons/karma/.svg
+    - assets/icons/knockout/.svg
+    - assets/icons/kotlin/.svg
+    - assets/icons/krakenjs/.svg
+    - assets/icons/kubernetes/.svg
+    - assets/icons/labview/.svg
+    - assets/icons/laravel/.svg
+    - assets/icons/latex/.svg
+    - assets/icons/less/.svg
+    - assets/icons/linkedin/.svg
+    - assets/icons/linux/.svg
+    - assets/icons/lua/.svg
+    - assets/icons/magento/.svg
+    - assets/icons/markdown/.svg
+    - assets/icons/materialui/.svg
+    - assets/icons/matlab/.svg
+    - assets/icons/maya/.svg
+    - assets/icons/meteor/.svg
+    - assets/icons/microsoftsqlserver/.svg
+    - assets/icons/minitab/.svg
+    - assets/icons/mocha/.svg
+    - assets/icons/modx/.svg
+    - assets/icons/mongodb/.svg
+    - assets/icons/moodle/.svg
+    - assets/icons/msdos/.svg
+    - assets/icons/mysql/.svg
+    - assets/icons/neo4j/.svg
+    - assets/icons/nestjs/.svg
+    - assets/icons/networkx/.svg
+    - assets/icons/nextjs/.svg
+    - assets/icons/nginx/.svg
+    - assets/icons/nixos/.svg
+    - assets/icons/nodejs/.svg
+    - assets/icons/nodewebkit/.svg
+    - assets/icons/npm/.svg
+    - assets/icons/nuget/.svg
+    - assets/icons/numpy/.svg
+    - assets/icons/nuxtjs/.svg
+    - assets/icons/objectivec/.svg
+    - assets/icons/ocaml/.svg
+    - assets/icons/openal/.svg
+    - assets/icons/opencv/.svg
+    - assets/icons/opengl/.svg
+    - assets/icons/opensuse/.svg
+    - assets/icons/opera/.svg
+    - assets/icons/oracle/.svg
+    - assets/icons/packer/.svg
+    - assets/icons/pandas/.svg
+    - assets/icons/perl/.svg
+    - assets/icons/phalcon/.svg
+    - assets/icons/phoenix/.svg
+    - assets/icons/photoshop/.svg
+    - assets/icons/php/.svg
+    - assets/icons/phpstorm/.svg
+    - assets/icons/podman/.svg
+    - assets/icons/polygon/.svg
+    - assets/icons/postgresql/.svg
+    - assets/icons/premierepro/.svg
+    - assets/icons/processing/.svg
+    - assets/icons/prometheus/.svg
+    - assets/icons/protractor/.svg
+    - assets/icons/putty/.svg
+    - assets/icons/pycharm/.svg
+    - assets/icons/pytest/.svg
+    - assets/icons/python/.svg
+    - assets/icons/pytorch/.svg
+    - assets/icons/qt/.svg
+    - assets/icons/r/.svg
+    - assets/icons/rails/.svg
+    - assets/icons/raspberrypi/.svg
+    - assets/icons/react/.svg
+    - assets/icons/rect/.svg
+    - assets/icons/redhat/.svg
+    - assets/icons/redis/.svg
+    - assets/icons/redux/.svg
+    - assets/icons/rocksdb/.svg
+    - assets/icons/rspec/.svg
+    - assets/icons/rstudio/.svg
+    - assets/icons/ruby/.svg
+    - assets/icons/rubymine/.svg
+    - assets/icons/rust/.svg
+    - assets/icons/safari/.svg
+    - assets/icons/salesforce/.svg
+    - assets/icons/sass/.svg
+    - assets/icons/scala/.svg
+    - assets/icons/sdl/.svg
+    - assets/icons/selenium/.svg
+    - assets/icons/sequelize/.svg
+    - assets/icons/shell/.svg
+    - assets/icons/shopware/.svg
+    - assets/icons/shotgrid/.svg
+    - assets/icons/sketch/.svg
+    - assets/icons/slack/.svg
+    - assets/icons/socketio/.svg
+    - assets/icons/solidity/.svg
+    - assets/icons/sourcetree/.svg
+    - assets/icons/spring/.svg
+    - assets/icons/spss/.svg
+    - assets/icons/sqlalchemy/.svg
+    - assets/icons/sqlite/.svg
+    - assets/icons/ssh/.svg
+    - assets/icons/storybook/.svg
+    - assets/icons/stylus/.svg
+    - assets/icons/subversion/.svg
+    - assets/icons/svelte/.svg
+    - assets/icons/swift/.svg
+    - assets/icons/symfony/.svg
+    - assets/icons/tailwindcss/.svg
+    - assets/icons/tensorflow/.svg
+    - assets/icons/terraform/.svg
+    - assets/icons/thealgorithms/.svg
+    - assets/icons/threejs/.svg
+    - assets/icons/tomcat/.svg
+    - assets/icons/tortoisegit/.svg
+    - assets/icons/towergit/.svg
+    - assets/icons/travis/.svg
+    - assets/icons/trello/.svg
+    - assets/icons/twitter/.svg
+    - assets/icons/typescript/.svg
+    - assets/icons/typo3/.svg
+    - assets/icons/ubuntu/.svg
+    - assets/icons/unity/.svg
+    - assets/icons/unix/.svg
+    - assets/icons/unrealengine/.svg
+    - assets/icons/uwsgi/.svg
+    - assets/icons/vagrant/.svg
+    - assets/icons/vim/.svg
+    - assets/icons/visualstudio/.svg
+    - assets/icons/vscode/.svg
+    - assets/icons/vuejs/.svg
+    - assets/icons/vuestorefront/.svg
+    - assets/icons/vuetify/.svg
+    - assets/icons/webflow/.svg
+    - assets/icons/weblate/.svg
+    - assets/icons/webpack/.svg
+    - assets/icons/webstorm/.svg
+    - assets/icons/windows8/.svg
+    - assets/icons/woocommerce/.svg
+    - assets/icons/wordpress/.svg
+    - assets/icons/xamarin/.svg
+    - assets/icons/xcode/.svg
+    - assets/icons/xd/.svg
+    - assets/icons/yarn/.svg
+    - assets/icons/yii/.svg
+    - assets/icons/yunohost/.svg
+    - assets/icons/zend/.svg
+    - assets/icons/zig/.svg
+    - assets/logo/gitsafari_logo.png
+    - assets/logo/gs_logo.png
+    - assets/logo.png
+    - assets/nav_home.png
+    - assets/nav_home_s.png
+    - assets/nav_notif.png
+    - assets/nav_notif_s.png
+    - assets/nav_profile.png
+    - assets/nav_reel.png
+    - assets/nav_search.png
+    - assets/nav_search_s.png
+    - assets/camera.png
+    - assets/igtv.png
+    - assets/messanger.png
+    - assets/story_wrap.png
+    - assets/story_wrap_seen.png
+    - assets/profile.png
+    - assets/profile_1.png
+    - assets/profile_2.png
+    - assets/profile_3.png
+    - assets/profile_4.png
+    - assets/post.png
+    - assets/post_1.png
+    - assets/post_2.png
+    - assets/post_3.png
+    - assets/post_4.png
+    - assets/post_5.png
+    - assets/post_6.png
+    - assets/post_7.png
+    - assets/post_8.png
+    - assets/post_9.png
+    - assets/post_10.png
+    - assets/post_11.png
+    - assets/comment.png
+    - assets/liked_button.png
+    - assets/live_button.png
+    - assets/igtv_sug.png
+    - assets/shop_sug.png
+    - assets/accounts_list.png
+    - assets/add_story.png
+    - assets/private_icon.png
+    - assets/profile_story_1.png
+    - assets/profile_story_2.png
+    - assets/profile_story_3.png
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+     - family: JetBrains
+       fonts:
+         - asset: assets/fonts/JetBrainsMono.ttf
+         - asset: assets/fonts/JetBrainsMonoItalic.ttf
+           style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

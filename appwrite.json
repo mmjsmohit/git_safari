@@ -1,0 +1,21 @@
+{
+    "projectId": "gitsafari",
+    "projectName": "Git Safari",
+    "functions": [
+        {
+            "$id": "102",
+            "name": "delStories",
+            "runtime": "dart-2.17",
+            "path": "functions/delStories",
+            "entrypoint": "lib/main.dart",
+            "ignore": [
+                ".packages",
+                ".dart_tool"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        }
+    ]
+}
