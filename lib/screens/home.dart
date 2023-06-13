@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitsafari/screens/add_story.dart';
 import 'package:gitsafari/screens/home_tabs/home_home.dart';
 import 'package:gitsafari/screens/home_tabs/home_newpost.dart';
 import 'package:gitsafari/screens/home_tabs/home_profile.dart';
-import 'package:gitsafari/screens/home_tabs/home_search.dart';
 import 'package:gitsafari/utils/appwrite/avatar_api.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,9 +16,7 @@ class _HomeScreen extends State<HomeScreen> {
   final AvatarAPI avatars = AvatarAPI();
   List<Widget> tabs = [
     HomeHomeTab(),
-    HomeSearchTab(),
     HomeNewpostTab(),
-    AddStory(),
     HomeProfileTab(),
   ];
 
