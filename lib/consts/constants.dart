@@ -9,6 +9,17 @@ const String BUCKET_ID = "6481a1b5d827545e412c";
 var kDarkTheme = ThemeData(
     scaffoldBackgroundColor: const Color(0xFF000000), fontFamily: 'JetBrains');
 
+String kGitSafariDescription = """Have you ever contributed to open source?
+
+Isn't it hard to find repositories that you want to contribute to, even with github's explore feature?
+
+Well, this is exactly the issue that we faced when we were starting out with open source.
+
+In fact, we came to know about Appwrite because of an open-source influencer on YouTube. So to solve this problem of "Open Source Scavenging", we thought, why not build a social networking platform for open-source developers, kinda like Instagram but for open-source?
+
+Just like you follow your favorite influencers and your friends on Instagram, with Git Safari, your feed will be filled with open-source recommendations from people that you follow that will give you a better insight into what they are contributing to and what they are recommending to others.
+""";
+
 const Map<String, List<String>> kResourcesList = {
   "aarch64": [],
   "adonisjs": [],

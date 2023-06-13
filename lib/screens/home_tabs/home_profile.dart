@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/main.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
 import 'package:gitsafari/utils/appwrite/avatar_api.dart';
 import 'package:gitsafari/utils/isar/isar_service.dart';
-import 'package:gitsafari/widgets/story.dart';
 import 'package:provider/provider.dart';
 
 class HomeProfileTab extends StatefulWidget {
@@ -48,7 +48,7 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
       child: Container(
         color: Color(0xFF121212),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               height: 45.0,
@@ -76,10 +76,6 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                       },
                     ),
                   ),
-                  Image.asset(
-                    "assets/accounts_list.png",
-                    width: 7.0,
-                  ),
                   Spacer(),
                 ],
               ),
@@ -87,9 +83,10 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
             SizedBox(
               height: 100.0,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 5, 5, 5),
+                    padding: const EdgeInsets.fromLTRB(18, 24, 5, 5),
                     child: FutureBuilder(
                       future: avatars.getCurrentAvatar(),
                       //works for both public file and private file, for private files you need to be logged in
@@ -119,72 +116,6 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                       // ),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Spacer(),
-                        Text(
-                          "54",
-                          style: TextStyle(
-                            color: Color(0xFFF9F9F9),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Text(
-                          "Posts",
-                          style: TextStyle(
-                            color: Color(0xFFF9F9F9),
-                            fontSize: 13.0,
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Spacer(),
-                        Text(
-                          "834",
-                          style: TextStyle(
-                            color: Color(0xFFF9F9F9),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Text(
-                          "Followers",
-                          style: TextStyle(
-                            color: Color(0xFFF9F9F9),
-                            fontSize: 13.0,
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Spacer(),
-                        Text(
-                          "162",
-                          style: TextStyle(
-                            color: Color(0xFFF9F9F9),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Text(
-                          "Following",
-                          style: TextStyle(
-                            color: Color(0xFFF9F9F9),
-                            fontSize: 13.0,
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -203,7 +134,7 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              padding: const EdgeInsets.only(top: 8, bottom: 24),
               child: FutureBuilder(
                   future: context.read<AuthAPI>().account.getPrefs(),
                   builder: (context, snapshot) {
@@ -331,70 +262,41 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                 }),
               ),
             ),
-            SizedBox(
-              height: 100.0,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                    child: Column(
+            Padding(
+              padding: EdgeInsets.only(top: 24),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color(0xff111625)),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          height: 62.0,
-                          width: 62.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: Color(0x14FFFFFF), width: 1.0),
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              "assets/add_story.png",
-                              width: 18.0,
-                            ),
-                          ),
+                        Text(
+                          'About ',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5.0, bottom: 8.0),
-                          child: Center(
-                            child: Text(
-                              "New",
-                              style: TextStyle(
-                                color: Color(0xFFF9F9F9),
-                                fontSize: 12.0,
-                              ),
-                            ),
-                          ),
-                        )
+                        Image.asset(
+                          "assets/logo/gs_logo.png",
+                          width: 40,
+                        ),
                       ],
                     ),
-                  ),
-                  StoryWidget(
-                    image: Image.asset(
-                      "assets/profile_story_1.png",
-                      width: 56.0,
-                    ),
-                    name: "Friends",
-                    seen: true,
-                  ),
-                  StoryWidget(
-                    image: Image.asset(
-                      "assets/profile_story_2.png",
-                      width: 56.0,
-                    ),
-                    name: "Sports",
-                    seen: true,
-                  ),
-                  StoryWidget(
-                    image: Image.asset(
-                      "assets/profile_story_3.png",
-                      width: 56.0,
-                    ),
-                    name: "Design",
-                    seen: true,
-                  ),
-                ],
+                    SizedBox(
+                      height: 300,
+                      child: SingleChildScrollView(
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          kGitSafariDescription,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],

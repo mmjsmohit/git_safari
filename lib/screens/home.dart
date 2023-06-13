@@ -46,27 +46,9 @@ class _HomeScreen extends State<HomeScreen> {
             ),
           ),
           BottomNavigationBarItem(
-            label: "search",
-            icon: Image.asset(
-              (_currentIndex == 1)
-                  ? "assets/nav_search_s.png"
-                  : 'assets/nav_search.png',
-              width: 22.0,
-            ),
-          ),
-          BottomNavigationBarItem(
             label: "reel",
             icon: Image.asset(
               'assets/nav_reel.png',
-              width: 22.0,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "notif",
-            icon: Image.asset(
-              (_currentIndex == 3)
-                  ? "assets/nav_notif_s.png"
-                  : 'assets/nav_notif.png',
               width: 22.0,
             ),
           ),
@@ -80,7 +62,7 @@ class _HomeScreen extends State<HomeScreen> {
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.memory(
-                          height: 24,
+                          height: 26,
                           snapshot.data!,
                         ),
                       )

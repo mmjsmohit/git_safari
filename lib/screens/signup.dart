@@ -24,22 +24,26 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _email = TextEditingController();
 
   Future<void> signup() async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  CircularProgressIndicator(),
-                ]),
-          );
-        });
+    // showDialog(
+    //     context: context,
+    //     barrierDismissible: false,
+    //     builder: (BuildContext context) {
+    //       return Dialog(
+    //         backgroundColor: Colors.transparent,
+    //         child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //             children: const [
+    //               CircularProgressIndicator(),
+    //             ]),
+    //       );
+    //     });
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
       final IsarService isar = context.read<IsarService>();
+      if (_password.text != _confirm.text) {
+        print('ERROR');
+        throw Exception("Passwords don't match, please try again!");
+      }
       const snackbar = SnackBar(content: Text('Account created!'));
       await appwrite.createUser(
           email: _email.text,
@@ -64,12 +68,11 @@ class _SignupScreenState extends State<SignupScreen> {
           MaterialPageRoute(
             builder: (context) => HomeScreen(),
           ));
-    } on AppwriteException catch (e) {
-      Navigator.pop(context);
-      print(e.response['message']);
+    } on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.response['message']),
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
         ),
       );
     }

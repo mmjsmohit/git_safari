@@ -180,7 +180,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
     ]);
     //Subscribe to changes in stories
     storysubscription = ApiClient.realtime.subscribe([
-      'datbases.6481a01aac2dfa64e4f8.collections.6481a107205097a5ab41.documents'
+      'databases.6481a01aac2dfa64e4f8.collections.6481a107205097a5ab41.documents'
     ]);
 
     // Call updateList every time a change has been detected.

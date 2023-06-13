@@ -64,7 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
             builder: (context) => LaunchScreen(),
           ));
     } on AppwriteException catch (error) {
-      Navigator.pop(context);
+      // Navigator.pop(context);
+      print(error.response['message']);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(error.response['message']),
         backgroundColor: Colors.red,
