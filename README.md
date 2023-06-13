@@ -1,30 +1,19 @@
 <p  align="center">
 <a  href="https://flutter.dev"  target="_blank"><img  height="39"  src="https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png"  alt="Flutter Logo"></a> <a>&nbsp;&nbsp;&nbsp;</a>
 <a  href="https://appwrite.io"  target="_blank"><img  width="260"  height="39"  src="https://appwrite.io/images/github-logo.png"  alt="Appwrite Logo"></a>
+<hr>
+<img  src="assets/logo/gitsafari_logo.png"  alt="Git Safari Logo">
 </p>
 
-# Almost Instagram
+# Git Safari
 
-A functional clone of Instagram made using Flutter and Appwrite.
+An app made to explore and find new GitHub repositories.
 
 ## Features
 
-- UI identical to Instagram (Pages: Launch, Login, Signup, Feed, Explore, New post, Profile).
-- Authentication (Login & Signup).
-- Post an image with caption.
-- Users can see each others' posts.
-- Appwrite is used to authenticate users, upload pictures, and store database of posts.
-
-## Screenshots
-
-| <img src = ".github\assets\SS-1.png" height = "500">   | <img src = ".github\assets\SS-2.png" height = "500">   |  <img src = ".github\assets\SS-3.png" height = "500">  |
-|:-: |:-: |--- |
-|  <img src = ".github\assets\SS-4.png" height = "500">  |  <img src = ".github\assets\SS-5.png" height = "500">  |   <img src = ".github\assets\SS-6.png" height = "500"> |
-| <img src = ".github\assets\SS-7.png" height = "500">   |  <img src = ".github\assets\SS-8.png" height = "500">  | <img src = ".github\assets\SS-9.png" height = "500">    |
-|    |    |    |
-
-And no, these screenshots are not of the actual Instagram app lol
-
+- Search and add GitHub Repositories of you liking with an in-app search feature.
+- See relevant resources based on the majority language used in the project.
+- (Add more features in this list)
 ## Installation
 
 ### Appwrite
@@ -40,7 +29,7 @@ docker run -it --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
     --entrypoint="install" \
-    appwrite/appwrite:1.0.1
+    appwrite/appwrite:1.3.7
 ```
 
 ### Windows
@@ -52,17 +41,17 @@ docker run -it --rm ^
     --volume //var/run/docker.sock:/var/run/docker.sock ^
     --volume "%cd%"/appwrite:/usr/src/code/appwrite:rw ^
     --entrypoint="install" ^
-    appwrite/appwrite:1.0.1
+    appwrite/appwrite:1.3.7
 ```
 
 #### PowerShell
 
 ```powershell
-docker run -it --rm ,
-    --volume /var/run/docker.sock:/var/run/docker.sock ,
-    --volume ${pwd}/appwrite:/usr/src/code/appwrite:rw ,
-    --entrypoint="install" ,
-    appwrite/appwrite:1.0.1
+docker run -it --rm `
+    --volume /var/run/docker.sock:/var/run/docker.sock `
+    --volume ${pwd}/appwrite:/usr/src/code/appwrite:rw `
+    --entrypoint="install" `
+    appwrite/appwrite:1.3.7
 ```
 
 Once the Docker installation completes, go to <http://localhost> to access the Appwrite console from your browser. Please note that on non-linux native hosts, the server might take a few minutes to start after installation completes.
@@ -149,7 +138,7 @@ After you're logged in, the CLI needs to be initialized with your Appwrite proje
 appwrite init project
 ```
 
-Choose `Create a new Appwrite project` and the following prompts will guide you through the setup process, enter `almostinstagram` as the ID for your new project. The init command also creates an **appwrite.json** file representing your Appwrite project.
+Choose `Create a new Appwrite project` and the following prompts will guide you through the setup process, enter `gitsafari` as the ID for your new project. The init command also creates an **appwrite.json** file representing your Appwrite project.
 
 Create a new database
 
@@ -187,13 +176,13 @@ Create a bucket to store post images
 appwrite storage createBucket --bucketId imagesbucket --name images --permissions 'read(\"any\")' 'write(\"any\")'
 ```
 
-## `lib/utils/api.dart`
+## `lib/consts/constants.dart`
 
-You may need to make some changes in `lib/utils/api.dart`:
+You may need to make some changes in `lib/consts/constants.dart`:
 
-**url**: This is the endpoint URL. If you are testing the app on an android studio emulator and appwrite is configured on localhost, then you don't need to change it. Otherwise, you will need to change the hostname to the URL that you set while initiating appwrite.
+**APPWRITE_URL**: This is the endpoint URL. If you are testing the app on an android studio emulator and appwrite is configured on cloud.appwrite.io, then you don't need to change it. Otherwise, you will need to change the hostname to the URL that you set while initiating appwrite.
 
-Rest of the `api.dart` should be left as it is.
+Rest of the `constants.dart` should be left as it is.
 
 ## Register the client on your dashboard
 
@@ -209,9 +198,10 @@ Finally, you need to register the flutter app. On appwrite console (http://local
 ├── assets # assets (images)
 ├── ios # ios files
 └── lib
+    ├── api # Logic for handling Appwrite and GitHub APIs
     ├── models # Custom Models
     ├── screens
     │   └── home_tabs # Tabs for home screen
-    ├── utils # Api info
+    ├── utils # Api info and Local DB Logic
     └── widgets # Custom widgets
 ```
