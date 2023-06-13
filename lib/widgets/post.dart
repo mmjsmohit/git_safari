@@ -6,6 +6,7 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gitsafari/consts/constants.dart';
+import 'package:gitsafari/screens/contribute_resources.dart';
 import 'package:gitsafari/utils/appwrite/auth_api.dart';
 import 'package:gitsafari/utils/appwrite/avatar_api.dart';
 import 'package:intl/intl.dart';
@@ -79,11 +80,6 @@ class _PostWidgetState extends State<PostWidget> {
                         child: child,
                       );
                     },
-                    // child: Image.asset(
-                    //   "assets/profile.png",
-                    //   width: 86.0,
-                    //   fit: BoxFit.fill,
-                    // ),
                   )
                   // child: Image.asset(
                   //   widget.post.image,
@@ -264,6 +260,29 @@ class _PostWidgetState extends State<PostWidget> {
                     Share.share(
                       "Check out this cool GitHub Repository I found on Git Safari: ${widget.post.githubURL}",
                     );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 13.5,
+                  left: 14.0,
+                  bottom: 16.0,
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  icon: Icon(
+                    Icons.menu_book,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ContributeResources(lang: widget.post.lang),
+                        ));
                   },
                 ),
               ),

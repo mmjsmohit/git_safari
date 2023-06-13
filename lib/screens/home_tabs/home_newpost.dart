@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gitsafari/api/client.dart';
 import 'package:gitsafari/consts/constants.dart';
+import 'package:gitsafari/screens/home.dart';
 import 'package:gitsafari/screens/repo_search.dart';
+import 'package:gitsafari/utils/appwrite/avatar_api.dart';
+import 'package:gitsafari/widgets/buttons.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
@@ -20,6 +22,7 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
   String _imageId = "";
   String _username = "";
   Map<String, String>? result;
+  final avatar = AvatarAPI();
   final TextEditingController _caption = TextEditingController();
   final TextEditingController _githubURL = TextEditingController();
   String? _language;
@@ -73,11 +76,15 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
       // Failure.
       print(error.response);
     });
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (Route<dynamic> route) => false);
   }
 
   Future<void> selectImage(BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
     try {
       // Upload the image file to appwrite storage.
       Future result = ApiClient.storage.createFile(
@@ -122,9 +129,28 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
         color: Color(0xFF121212),
         child: Column(children: [
           SizedBox(
-            height: 45.0,
+            height: 56.0,
             child: Row(
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Builder(builder: (context) {
+                    return IconButton(
+                      onPressed: () async {
+                        await Future.delayed(Duration(seconds: 2));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
+                            (Route<dynamic> route) => false);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_sharp,
+                        color: Colors.white,
+                      ),
+                      color: Colors.blue,
+                    );
+                  }),
+                ),
                 Spacer(),
                 Text(
                   "New post",
@@ -139,7 +165,10 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                   child: Builder(builder: (context) {
                     return IconButton(
                       onPressed: () => createNewPost(context),
-                      icon: Icon(Icons.check),
+                      icon: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ),
                       color: Colors.blue,
                     );
                   }),
@@ -151,19 +180,43 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
             height: 62 + 16 * 5,
             child: Row(children: [
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Image.asset(
-                  "assets/profile.png",
-                  width: 62.0,
-                ),
-              ),
+                  padding: const EdgeInsets.all(16.0),
+                  child: FutureBuilder(
+                    future: avatar.getCurrentAvatar(),
+                    //works for both public file and private file, for private files you need to be logged in
+                    builder: (context, snapshot) {
+                      Widget child = snapshot.hasData && snapshot.data != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.memory(
+                                height: 64,
+                                snapshot.data!,
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 20,
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                      return AnimatedSwitcher(
+                        duration: Duration(seconds: 1),
+                        child: child,
+                      );
+                    },
+                  )),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CupertinoButton.filled(
-                        child: Text('Search for repositories'),
+                      GradientButton(
+                        width: double.infinity,
+                        text: 'Search for repositories',
+                        icon: Icons.search,
                         onPressed: () async {
                           result = await Navigator.push(
                             context,
@@ -247,18 +300,11 @@ class _HomeNewpostTabState extends State<HomeNewpostTab> {
                     width: double.infinity,
                     height: 44.0,
                     child: Builder(builder: (context) {
-                      return ElevatedButton(
+                      return GradientButton(
                         onPressed: () => selectImage(context),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        child: Text(
-                          'Select image',
-                          style:
-                              TextStyle(fontSize: 14.0, fontFamily: 'Roboto'),
-                        ),
+                        text: 'Select Image',
+                        width: double.infinity,
+                        icon: Icons.image,
                       );
                     }),
                   ),

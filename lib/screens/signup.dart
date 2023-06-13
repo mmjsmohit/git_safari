@@ -259,6 +259,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             ),
             GradientButton(
+              width: 150,
               text: 'Sign Up',
               icon: Icons.edit_note,
               onPressed: () => signup(),

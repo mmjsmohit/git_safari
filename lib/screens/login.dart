@@ -175,6 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             GradientButton(
+              width: 150,
               text: 'Log In',
               icon: Icons.login,
               onPressed: () => signIn(),

@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^2.0.15
   intl: ^0.18.1
   share_plus: ^7.0.2
+  link_preview_generator: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -299,6 +300,7 @@ flutter:
     - assets/icons/sdl/.svg
     - assets/icons/selenium/.svg
     - assets/icons/sequelize/.svg
+    - assets/icons/shell/.svg
     - assets/icons/shopware/.svg
     - assets/icons/shotgrid/.svg
     - assets/icons/sketch/.svg
