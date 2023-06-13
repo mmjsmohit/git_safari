@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitsafari/api/client.dart';
 import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/models/post_model.dart';
+import 'package:gitsafari/screens/add_story.dart';
 import 'package:gitsafari/screens/home_tabs/storypage.dart';
 import 'package:gitsafari/widgets/post.dart';
 import 'package:gitsafari/widgets/story.dart';
@@ -229,11 +230,18 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                       width: 24.0,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Image.asset(
-                      "assets/messanger.png",
-                      width: 24.0,
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddStory(),
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Image.asset(
+                        "assets/messanger.png",
+                        width: 24.0,
+                      ),
                     ),
                   ),
                 ],

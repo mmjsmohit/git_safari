@@ -101,6 +101,13 @@ class _StoryPageState extends State<StoryPage> {
                     ],
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8, bottom: 20),
+                  child: Text(
+                    "Tap on the left side of the screen to begin story timer",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
               ],
             );
           },

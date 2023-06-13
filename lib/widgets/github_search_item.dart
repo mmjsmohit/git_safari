@@ -18,16 +18,23 @@ class GithubItem extends StatelessWidget {
           highlightColor: Colors.lightBlueAccent,
           splashColor: Colors.red,
           child: Container(
+            color: Color(0xff111625),
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text((repo.name != null) ? repo.name : '-',
-                      style: Theme.of(context).textTheme.displayMedium),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayMedium
+                          ?.copyWith(color: Colors.white)),
                   Padding(
                     padding: EdgeInsets.only(top: 4.0),
                     child: Text(repo.description ?? 'No desription',
-                        style: Theme.of(context).textTheme.bodyMedium),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.white)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 8.0),
@@ -36,7 +43,10 @@ class GithubItem extends StatelessWidget {
                         Expanded(
                             child: Text((repo.owner != null) ? repo.owner : '',
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.bodySmall)),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.white))),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +54,7 @@ class GithubItem extends StatelessWidget {
                             children: <Widget>[
                               Icon(
                                 Icons.star,
-                                color: Colors.deepOrange,
+                                color: Colors.white,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 4.0),
@@ -53,8 +63,10 @@ class GithubItem extends StatelessWidget {
                                         ? '${repo.watchersCount} '
                                         : '0 ',
                                     textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: Colors.white)),
                               ),
                             ],
                           ),
