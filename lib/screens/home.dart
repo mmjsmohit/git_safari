@@ -75,11 +75,6 @@ class _HomeScreen extends State<HomeScreen> {
                   child: child,
                 );
               },
-              // child: Image.asset(
-              //   "assets/profile.png",
-              //   width: 86.0,
-              //   fit: BoxFit.fill,
-              // ),
             ),
           ),
         ],

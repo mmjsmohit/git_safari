@@ -35,13 +35,6 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
     await isar.deleteUser();
   }
 
-  // void setUser() async {
-  //   final existingUser = await isar.getUser();
-  //   print(existingUser.toString());
-  //   _username = existingUser!.username!;
-  //   _name = existingUser.name!;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -109,11 +102,6 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                           child: child,
                         );
                       },
-                      // child: Image.asset(
-                      //   "assets/profile.png",
-                      //   width: 86.0,
-                      //   fit: BoxFit.fill,
-                      // ),
                     ),
                   ),
                 ],
@@ -157,18 +145,7 @@ class _HomeProfileTabState extends State<HomeProfileTab> {
                             TextStyle(color: Color(0xFFF9F9F9), fontSize: 14.0),
                       );
                     }
-                  }
-                  // snapshot.connectionState ==
-                  //         ConnectionState.waiting
-                  //     ? SizedBox(
-                  //         height: 10,
-                  //       )
-                  //     : Text(
-                  //         snapshot.data?.data['bio'],
-                  //         style:
-                  //             TextStyle(color: Color(0xFFF9F9F9), fontSize: 14.0),
-                  //       ),
-                  ),
+                  }),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

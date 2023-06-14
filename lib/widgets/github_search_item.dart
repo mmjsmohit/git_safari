@@ -71,11 +71,6 @@ class GithubItem extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // Expanded(
-                        //     child: Text(
-                        //         (repo.language != null) ? repo.language : '',
-                        //         textAlign: TextAlign.end,
-                        //         style: Theme.of(context).textTheme.bodySmall)),
                       ],
                     ),
                   ),
@@ -84,15 +79,7 @@ class GithubItem extends StatelessWidget {
     );
   }
 
-  // _launchURL(url) async {
-  //   if (await canLaunchUrl(url)) {
-  //     await launchUrl(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
   Future<void> _launchUrl(url) async {
-    // final Uri url = Uri.parse(post.githubURL);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }

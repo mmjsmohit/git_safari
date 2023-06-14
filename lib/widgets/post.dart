@@ -80,12 +80,7 @@ class _PostWidgetState extends State<PostWidget> {
                         child: child,
                       );
                     },
-                  )
-                  // child: Image.asset(
-                  //   widget.post.image,
-                  //   width: 32.0,
-                  // ),
-                  ),
+                  )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -227,22 +222,6 @@ class _PostWidgetState extends State<PostWidget> {
                   },
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(
-              //     top: 13.5,
-              //     left: 14.0,
-              //     bottom: 16.0,
-              //   ),
-              //   child: IconButton(
-              //     constraints: BoxConstraints(),
-              //     padding: EdgeInsets.zero,
-              //     icon: Image.asset(
-              //       "assets/comment.png",
-              //       width: 24.0,
-              //     ),
-              //     onPressed: () {},
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(
                   top: 13.5,
@@ -310,13 +289,6 @@ class _PostWidgetState extends State<PostWidget> {
           ),
           Row(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 14.0),
-              //   child: Image.asset(
-              //     "assets/profile_1.png",
-              //     width: 17.0,
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 14.0),
                 child: Text(

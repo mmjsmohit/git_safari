@@ -43,39 +43,6 @@ class LaunchScreen extends StatelessWidget {
           : value == AuthStatus.authenticated
               ? HomeScreen()
               : LoginScreen(),
-      // Builder(builder: (context) {
-      //       _context = context;
-      //       return Scaffold(
-      //         body: Column(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             GitSafariLogo(padding: EdgeInsets.all(16)),
-      //             SizedBox(
-      //               height: 40,
-      //             ),
-      //             GradientButton(
-      //               icon: Icons.login,
-      //               text: "Log In",
-      //               onPressed: () async {
-      //                 Navigator.of(context).push(MaterialPageRoute(
-      //                     builder: (context) => LoginScreen()));
-      //               },
-      //             ),
-      //             SizedBox(
-      //               height: 16,
-      //             ),
-      //             GradientButton(
-      //               icon: Icons.edit_note,
-      //               text: "Sign Up",
-      //               onPressed: () {
-      //                 Navigator.of(context).push(MaterialPageRoute(
-      //                     builder: (context) => SignupScreen()));
-      //               },
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     }),
     );
   }
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gitsafari/api/client.dart';
 import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/models/post_model.dart';
-import 'package:gitsafari/screens/add_story.dart';
 import 'package:gitsafari/screens/home_tabs/storypage.dart';
 import 'package:gitsafari/widgets/post.dart';
 import 'package:gitsafari/widgets/story.dart';
 import 'package:intl/intl.dart';
+import 'package:gitsafari/widgets/buttons.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:core';
+import 'package:appwrite/appwrite.dart';
 
 class HomeHomeTab extends StatefulWidget {
   const HomeHomeTab({Key? key}) : super(key: key);
@@ -41,22 +45,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
         // date: DateTime.now(),
         liked: false),
   ];
-
-  void likePost(BuildContext context, int i) {
-    List<Post> newPosts = List.from(_posts);
-
-    newPosts[i].liked = !newPosts[i].liked;
-    if (newPosts[i].liked) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("You have liked this post."),
-        ),
-      );
-    }
-    setState(() {
-      _posts = List.from(newPosts);
-    });
-  }
 
   void updateStoryList() {
     _sampleuser = [];
@@ -108,13 +96,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
         // Failure.
         print(error.response);
       });
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text(
-      //       "You have already upvoted this repository!",
-      //     ),
-      //   ),
-      // );
     } else {
       newUpvoteList.add(username);
       Future result = ApiClient.databases.updateDocument(
@@ -174,6 +155,80 @@ class _HomeHomeTab extends State<HomeHomeTab> {
       // Error
       print(error.response);
     });
+  }
+
+  void createNewStory(BuildContext context) {
+    // return {'owner': owner, 'repoName': repoName};
+    // Check if user has not selected an image yet.
+    if (!_imageSelected) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Select an image.",
+          ),
+        ),
+      );
+      return;
+    }
+    // Create a new document in our posts collection.
+    String dt = DateTime.now().toString();
+    DateTime dta = DateTime.parse(dt);
+    print(dt);
+    print(dta);
+    Future result = ApiClient.databases.createDocument(
+        databaseId: "6481a01aac2dfa64e4f8",
+        collectionId: "6481a107205097a5ab41",
+        documentId: "unique()",
+        data: {
+          'username': _username,
+          'image-id': _imageId,
+          'createdAt': dt,
+        });
+
+    result.then((response) {
+      // Success.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Story posted!",
+          ),
+        ),
+      );
+    }).catchError((error) {
+      // Failure.
+      print(error.response);
+    });
+  }
+
+  String _username_story = "hello_there";
+  String _imageId = "";
+
+  bool _imageSelected = false;
+
+  Future<void> selectImage(BuildContext context) async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    try {
+      // Upload the image file to appwrite storage.
+      Future result = ApiClient.storage.createFile(
+        bucketId: "6481a1c504e251c5d4b0",
+        fileId: "unique()",
+        file: InputFile.fromPath(path: image!.path, filename: image.name),
+      );
+
+      result.then((response) {
+        // Success.
+        setState(() {
+          _imageId = response.$id;
+          _imageSelected = true;
+        });
+      }).catchError((error) {
+        // Failure.
+        print(error.response);
+      });
+    } catch (error) {
+      // User backed out before selecting an image, do nothing.
+    }
   }
 
   @override
@@ -244,14 +299,37 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                   Spacer(),
                   PopupMenuButton(
                       color: Colors.black,
-                      icon: Image.asset(
-                        "assets/messanger.png",
-                        width: 32.0,
+                      icon: SvgPicture.asset(
+                        'assets/download.svg',
                       ),
                       onSelected: (result) {
                         if (result == 0) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddStory()));
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  color: Color(0xff111625),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GradientButton(
+                                          text: "Select Image",
+                                          icon: Icons.broken_image_outlined,
+                                          onPressed: () => selectImage(context),
+                                          width: 200),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      GradientButton(
+                                          text: "Add Story",
+                                          icon: Icons.add_a_photo_outlined,
+                                          onPressed: () =>
+                                              createNewStory(context),
+                                          width: 200),
+                                    ],
+                                  ),
+                                );
+                              });
                         }
                       },
                       itemBuilder: (BuildContext context) {
@@ -265,20 +343,6 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                           ),
                         ];
                       }),
-                  // GestureDetector(
-                  //   onTap: () => Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => AddStory(),
-                  //       )),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(right: 16.0),
-                  //     child: Image.asset(
-                  //       "assets/messanger.png",
-                  //       width: 24.0,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),

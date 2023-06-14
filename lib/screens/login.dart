@@ -19,31 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  // void login(BuildContext context) {
-  //   // Attempt to login with email and password
-  //   Future result = ApiClient.account.createEmailSession(
-  //     email: _email.text,
-  //     password: _password.text,
-  //   );
-  //   result.then((response) {
-  //     // Success
-  //     Navigator.of(context).push(
-  //       MaterialPageRoute(
-  //         builder: (context) => HomeScreen(),
-  //       ),
-  //     );
-  //   }).catchError((error) {
-  //     // Failure
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         backgroundColor: Colors.red,
-  //         content:
-  //             Text('Following error has occured: ${error.response['message']}'),
-  //       ),
-  //     );
-  //     print(error.response);
-  //   });
-  // }
+
   signIn() async {
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();

@@ -43,8 +43,6 @@ class ContributeResources extends StatelessWidget {
                 SvgPicture.asset(
                   fit: BoxFit.contain,
                   theme: SvgTheme(currentColor: Colors.transparent),
-                  // colorFilter:>???
-                  // ColorFilter.mode(Colors.white, BlendMode.softLight),
                   'assets/icons/$lang/.svg',
                   width: 50,
                   height: 50,
@@ -75,43 +73,4 @@ class ContributeResources extends StatelessWidget {
       ),
     );
   }
-// @override
-// Widget build(BuildContext context) {
-//   var _previewData;
-//   return SafeArea(
-//       child: Column(
-//     children: [
-//       Container(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Image.asset(
-//                 "assets/logo/gs_logo.png",
-//                 width: 80,
-//               ),
-//               Spacer(),
-//             ],
-//           ),
-//         ),
-//       ),
-//       ListView.builder(
-//         itemCount: resources?.length,
-//         itemBuilder: (context, index) {
-//           return Container(
-//             width: 400,
-//             height: 200,
-//             child: LinkPreviewGenerator(
-//               bodyMaxLines: 3,
-//               link: 'https://github.com/ghpranav/link_preview_generator',
-//               linkPreviewStyle: LinkPreviewStyle.large,
-//               showGraphic: true,
-//             ),
-//           );
-//         },
-//       )
-//     ],
-//   ));
-// }
 }
