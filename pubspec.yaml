@@ -403,6 +403,8 @@ flutter:
     - assets/profile_story_1.png
     - assets/profile_story_2.png
     - assets/profile_story_3.png
+    - assets/download.png
+    - assets/download.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

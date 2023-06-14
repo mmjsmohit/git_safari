@@ -24,19 +24,6 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _email = TextEditingController();
 
   Future<void> signup() async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (BuildContext context) {
-    //       return Dialog(
-    //         backgroundColor: Colors.transparent,
-    //         child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //             children: const [
-    //               CircularProgressIndicator(),
-    //             ]),
-    //       );
-    //     });
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
       final IsarService isar = context.read<IsarService>();
@@ -80,17 +67,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   signUpWithProvider(String provider) {
     try {
-      // final AuthAPI appwrite = context.read<AuthAPI>();
-      // final IsarService isar = context.read<IsarService>();
       final appwrite = context.read<AuthAPI>();
       appwrite.signInWithProvider(provider: provider);
       appwrite.account.updatePrefs(prefs: {"bio": ""});
-      // final user = appwrite.currentUser;
-      // final newUserCollection = UserIsarCollection()
-      //   ..email = _email.text
-      //   ..username = user.$id
-      //   ..name = user.name;
-      // isar.saveUser(newUserCollection);
       Navigator.pop(context);
     } on AppwriteException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -128,9 +107,6 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Container(
-            //   height: 60.0,
-            // ),
             GitSafariLogo(padding: EdgeInsets.all(16)),
             Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0),
