@@ -21,7 +21,6 @@ List<UserModel> _sampleuser = [];
 
 class _HomeHomeTab extends State<HomeHomeTab> {
   String _username = "";
-
   var subscription;
   var storysubscription;
 
@@ -89,13 +88,33 @@ class _HomeHomeTab extends State<HomeHomeTab> {
       List<dynamic> upvotes) {
     List<dynamic> newUpvoteList = upvotes;
     if (upvotes.contains(username)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "You have already upvoted this repository!",
-          ),
-        ),
+      newUpvoteList.remove(username);
+      Future result = ApiClient.databases.updateDocument(
+        databaseId: APPWRITE_DATABASE_ID,
+        collectionId: POST_COLLECTION_ID,
+        documentId: docId,
+        data: {'upvotes': newUpvoteList},
       );
+      result.then((response) {
+        // Success.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Upvote removed!",
+            ),
+          ),
+        );
+      }).catchError((error) {
+        // Failure.
+        print(error.response);
+      });
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(
+      //       "You have already upvoted this repository!",
+      //     ),
+      //   ),
+      // );
     } else {
       newUpvoteList.add(username);
       Future result = ApiClient.databases.updateDocument(
@@ -223,27 +242,43 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                     width: 80,
                   ),
                   Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Image.asset(
-                      "assets/igtv.png",
-                      width: 24.0,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddStory(),
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Image.asset(
+                  PopupMenuButton(
+                      color: Colors.black,
+                      icon: Image.asset(
                         "assets/messanger.png",
-                        width: 24.0,
+                        width: 32.0,
                       ),
-                    ),
-                  ),
+                      onSelected: (result) {
+                        if (result == 0) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AddStory()));
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem(
+                            value: 0, //---add this line
+                            child: Text(
+                              'Story',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ];
+                      }),
+                  // GestureDetector(
+                  //   onTap: () => Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => AddStory(),
+                  //       )),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(right: 16.0),
+                  //     child: Image.asset(
+                  //       "assets/messanger.png",
+                  //       width: 24.0,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
