@@ -85,17 +85,10 @@ class _PostWidgetState extends State<PostWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 1.0),
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                     child: Text(
                       widget.post.name,
                       style: TextStyle(color: Color(0xFFF9F9F9), fontSize: 13),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(
-                      widget.post.location,
-                      style: TextStyle(color: Color(0xFFF9F9F9), fontSize: 11),
                     ),
                   ),
                 ],
@@ -311,6 +304,7 @@ class _PostWidgetState extends State<PostWidget> {
             padding: const EdgeInsets.only(left: 14.0, top: 6.0),
             child: Text(
               widget.post.caption,
+              overflow: TextOverflow.clip,
               style: TextStyle(
                 color: Color(0xFFF9F9F9),
                 fontSize: 13.0,

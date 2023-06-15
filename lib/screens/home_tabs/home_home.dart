@@ -1,16 +1,17 @@
+import 'dart:core';
+
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gitsafari/api/client.dart';
 import 'package:gitsafari/consts/constants.dart';
 import 'package:gitsafari/models/post_model.dart';
 import 'package:gitsafari/screens/home_tabs/storypage.dart';
+import 'package:gitsafari/widgets/buttons.dart';
 import 'package:gitsafari/widgets/post.dart';
 import 'package:gitsafari/widgets/story.dart';
-import 'package:intl/intl.dart';
-import 'package:gitsafari/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:core';
-import 'package:appwrite/appwrite.dart';
+import 'package:intl/intl.dart';
 
 class HomeHomeTab extends StatefulWidget {
   const HomeHomeTab({Key? key}) : super(key: key);
@@ -312,6 +313,28 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 32),
+                                        child: Text(
+                                          'Add a story',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 32),
+                                        child: Text(
+                                          'Stories disappear after 24 hours.',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            color: Colors.grey,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                      Spacer(),
                                       GradientButton(
                                           text: "Select Image",
                                           icon: Icons.broken_image_outlined,
@@ -326,6 +349,7 @@ class _HomeHomeTab extends State<HomeHomeTab> {
                                           onPressed: () =>
                                               createNewStory(context),
                                           width: 200),
+                                      Spacer(),
                                     ],
                                   ),
                                 );
