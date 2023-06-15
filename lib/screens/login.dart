@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:gitsafari/main.dart';
 import 'package:gitsafari/screens/signup.dart';
@@ -51,7 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   signInWithProvider(String provider) async {
     try {
+      final appwrite = context.read<AuthAPI>();
       await context.read<AuthAPI>().signInWithProvider(provider: provider);
+      Preferences result = await appwrite.account.getPrefs();
+      if (result.data['bio'].toString() == null) {
+        await appwrite.account.updatePrefs(prefs: {"bio": ""});
+      }
     } on AppwriteException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(error.response['message']),

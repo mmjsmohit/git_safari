@@ -86,6 +86,10 @@ class AuthAPI extends ChangeNotifier {
       final session = await account.createOAuth2Session(provider: provider);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
+      Preferences result = await account.getPrefs();
+      if (result.data['bio'] == null) {
+        await account.updatePrefs(prefs: {"bio": ""});
+      }
       return session;
     } finally {
       notifyListeners();

@@ -178,6 +178,7 @@ flutter:
     - assets/icons/gimp/.svg
     - assets/icons/git/.svg
     - assets/icons/github/.svg
+    - assets/icons/github/github-original.svg
     - assets/icons/gitlab/.svg
     - assets/icons/gitter/.svg
     - assets/icons/go/.svg
