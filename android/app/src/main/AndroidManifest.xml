@@ -2,7 +2,7 @@
     package="com.gitsafari">
 
     <application
-        android:label="instagram"
+        android:label="Git Safari"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
