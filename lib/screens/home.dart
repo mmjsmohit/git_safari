@@ -23,6 +23,7 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 22.0,
